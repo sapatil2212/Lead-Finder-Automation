@@ -10,7 +10,7 @@ import dotenv from "dotenv";
 import { createServer as createViteServer } from "vite";
 import { CONFIG } from "./src/config";
 import { Lead } from "./src/types";
-import { runScraper } from "./src/mapsScraper";
+import { runScraper, requestStopScraping } from "./src/mapsScraper";
 import { logger } from "./src/logger";
 import { duplicateChecker } from "./src/duplicateChecker";
 import { loadFailedLeads, retryFailedLeads, sendLeadToWebhook, fetchLeadsFromGoogleSheet } from "./src/googleSheetsWebhook";
@@ -137,6 +137,14 @@ app.post("/api/run-scraper", async (req, res) => {
   } finally {
     isScrapingRunning = false;
   }
+});
+
+app.post("/api/stop-scraper", (req, res) => {
+  if (!isScrapingRunning) {
+    return res.status(400).json({ error: "Scraping session is not active." });
+  }
+  requestStopScraping();
+  res.json({ success: true, message: "Stop requested." });
 });
 
 app.post("/api/retry-failed", async (req, res) => {

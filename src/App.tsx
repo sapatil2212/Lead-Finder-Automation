@@ -61,6 +61,7 @@ export default function App() {
 
   // Scraper status
   const [isRunning, setIsRunning] = useState(false);
+  const [isStopping, setIsStopping] = useState(false);
   const [webhookConfigured, setWebhookConfigured] = useState(false);
   const [lastResult, setLastResult] = useState<any>(null);
 
@@ -573,6 +574,25 @@ export default function App() {
       }
     } catch (e) {
       alert("Error triggering scraper agent.");
+    }
+  };
+
+  const handleStopScraper = async () => {
+    if (!isRunning) return;
+    setIsStopping(true);
+    try {
+      setTerminalLogs(prev => prev + "\n[SYSTEM] Stop request initiated by user. Aborting scraping loop...\n");
+      const res = await fetch("/api/stop-scraper", { method: "POST" });
+      if (res.ok) {
+        setTerminalLogs(prev => prev + "[SYSTEM] Stopping scraping operations...\n");
+      } else {
+        const errorData = await res.json();
+        setTerminalLogs(prev => prev + `[ERROR] Failed to stop scraper: ${errorData.error || "Unknown error"}\n`);
+      }
+    } catch (e) {
+      alert("Error requesting stop scraper.");
+    } finally {
+      setIsStopping(false);
     }
   };
 
@@ -1449,16 +1469,34 @@ export default function App() {
                     </form>
                   </div>
 
-                  <div className="pt-6 border-t border-[#1e293b]/60 space-y-3">
-                    <button
-                      onClick={handleStartScraper}
-                      disabled={isRunning}
-                      className="w-full py-3 px-4 rounded-xl font-bold text-xs bg-indigo-600 hover:bg-indigo-500 text-white flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/10 focus:outline-none transition-all disabled:opacity-50 cursor-pointer"
-                    >
-                      <Play className="h-4.5 w-4.5 fill-white" />
-                      {isRunning ? "Agent Scraping Locality..." : "Run LeadFinder Agent"}
-                    </button>
-                  </div>
+                    {isRunning ? (
+                      <button
+                        onClick={handleStopScraper}
+                        disabled={isStopping}
+                        className="w-full py-3 px-4 rounded-xl font-bold text-xs bg-rose-600 hover:bg-rose-500 text-white flex items-center justify-center gap-2 shadow-lg shadow-rose-500/10 focus:outline-none transition-all disabled:opacity-50 cursor-pointer"
+                      >
+                        {isStopping ? (
+                          <>
+                            <Loader2 className="h-4.5 w-4.5 animate-spin" />
+                            Stopping Scraper...
+                          </>
+                        ) : (
+                          <>
+                            <X className="h-4.5 w-4.5" />
+                            Stop Collecting Leads
+                          </>
+                        )}
+                      </button>
+                    ) : (
+                      <button
+                        onClick={handleStartScraper}
+                        disabled={isRunning}
+                        className="w-full py-3 px-4 rounded-xl font-bold text-xs bg-indigo-600 hover:bg-indigo-500 text-white flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/10 focus:outline-none transition-all disabled:opacity-50 cursor-pointer"
+                      >
+                        <Play className="h-4.5 w-4.5 fill-white" />
+                        Run LeadFinder Agent
+                      </button>
+                    )}
                 </div>
 
               </div>

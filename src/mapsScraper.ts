@@ -16,6 +16,21 @@ import { analyzeLinkedIn } from "./linkedinAnalyzer";
 import { calculateDigitalPresenceScore } from "./digitalPresenceScorer";
 import { generateSalesInsight } from "./aiInsights";
 
+let stopRequested = false;
+
+export function requestStopScraping(): void {
+  logger.warn("Cancellation requested: setting stopRequested flag.");
+  stopRequested = true;
+}
+
+export function resetStopScraping(): void {
+  stopRequested = false;
+}
+
+export function isStopScrapingRequested(): boolean {
+  return stopRequested;
+}
+
 interface ScrapingResult {
   scannedCount: number;
   withoutWebsiteCount: number;
@@ -81,6 +96,7 @@ function parseReviews(text: string | null): number {
 }
 
 export async function runScraper(): Promise<ScrapingResult> {
+  resetStopScraping();
   const query = `${CONFIG.businessType} in ${CONFIG.location}`;
   logger.info(`Starting lead search for: '${query}'`);
   
@@ -158,6 +174,10 @@ export async function runScraper(): Promise<ScrapingResult> {
     const maxScrollAttempts = 20; // Bound the scrolls to prevent infinite loops
 
     while (placeLinks.size < CONFIG.maxResults && scrollAttempts < maxScrollAttempts) {
+      if (stopRequested) {
+        logger.warn("Scraping cancelled by user during scrolling.");
+        break;
+      }
       scrollAttempts++;
       
       // Select all links referencing detailed coordinates or place identifiers
@@ -246,6 +266,10 @@ export async function runScraper(): Promise<ScrapingResult> {
 
     // Step 2: Query details for each target business
     for (const url of targetUrls) {
+      if (stopRequested) {
+        logger.warn("Scraping cancelled by user during details extraction loop.");
+        break;
+      }
       scannedCount++;
       logger.info(`--- Processing [${scannedCount}/${targetUrls.length}] ---`);
 
@@ -538,6 +562,7 @@ export async function runScraper(): Promise<ScrapingResult> {
  * or runs inside a headless docker environment without display drivers.
  */
 export async function runSimulationScanner(): Promise<ScrapingResult> {
+  resetStopScraping();
   const query = `${CONFIG.businessType} in ${CONFIG.location}`;
   logger.warn(`--- Running High-Fidelity Simulation Mode for '${query}' ---`);
   
@@ -552,6 +577,10 @@ export async function runSimulationScanner(): Promise<ScrapingResult> {
 
   // Simulate scanning in increments (1.5s delay per log)
   for (const mock of simulatedLeads) {
+    if (stopRequested) {
+      logger.warn("Simulated scraping cancelled by user.");
+      break;
+    }
     if (scannedCount >= CONFIG.maxResults) break;
     scannedCount++;
     
