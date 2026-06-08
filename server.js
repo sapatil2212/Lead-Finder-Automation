@@ -7,13 +7,13 @@ import { createServer as createViteServer } from "vite";
 
 // src/config.ts
 var CONFIG = {
-  businessType: "skin clinic",
-  location: "ahilyanagar",
-  maxResults: 5,
+  businessType: "dental clinic",
+  location: "swargate",
+  maxResults: 50,
   enableSimulation: false,
   headless: false,
-  lat: 19.092952,
-  lng: 74.7493451,
+  lat: 18.4986771,
+  lng: 73.8578427,
   radius: 15
 };
 
@@ -543,7 +543,7 @@ async function analyzeInstagram(browser, businessName) {
       let newestDate = null;
       if (handle) {
         try {
-          const siteSearchUrl = `https://www.google.com/search?q=site%3Ainstagram.com%2F${handle}`;
+          const siteSearchUrl = `https://www.google.com/search?q=site%3Ainstagram.com+%22${handle}%22`;
           logger.info(`Searching Google index for Instagram posts of ${handle}: ${siteSearchUrl}`);
           await page.goto(siteSearchUrl, { waitUntil: "domcontentloaded", timeout: 15e3 });
           const rawDates = await page.evaluate(() => {
@@ -555,9 +555,11 @@ async function analyzeInstagram(browser, businessName) {
             const divs = document.querySelectorAll("div.VwiC3b");
             divs.forEach((div) => {
               const text = div.textContent || "";
-              const match = text.match(/(\d+\s+(?:days|day|weeks|week|months|month|years|year|hours|hour|mins|min|hrs|hr)\s+ago)/i);
-              if (match) list.push(match[1]);
+              const relMatch = text.match(/(\d+\s+(?:days|day|weeks|week|months|month|years|year|hours|hour|mins|min|hrs|hr)\s+ago)/i);
+              if (relMatch) list.push(relMatch[1]);
               if (text.toLowerCase().includes("yesterday")) list.push("yesterday");
+              const absMatch = text.match(/((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{1,2},\s+\d{4})/i) || text.match(/(\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{4})/i);
+              if (absMatch) list.push(absMatch[1]);
             });
             const cites = document.querySelectorAll("cite");
             cites.forEach((cite) => {

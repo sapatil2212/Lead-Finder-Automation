@@ -169,7 +169,7 @@ export async function analyzeInstagram(browser: Browser, businessName: string): 
 
       if (handle) {
         try {
-          const siteSearchUrl = `https://www.google.com/search?q=site%3Ainstagram.com%2F${handle}`;
+          const siteSearchUrl = `https://www.google.com/search?q=site%3Ainstagram.com+%22${handle}%22`;
           logger.info(`Searching Google index for Instagram posts of ${handle}: ${siteSearchUrl}`);
           await page.goto(siteSearchUrl, { waitUntil: "domcontentloaded", timeout: 15000 });
 
@@ -186,9 +186,15 @@ export async function analyzeInstagram(browser: Browser, businessName: string): 
             const divs = document.querySelectorAll('div.VwiC3b');
             divs.forEach(div => {
               const text = div.textContent || "";
-              const match = text.match(/(\d+\s+(?:days|day|weeks|week|months|month|years|year|hours|hour|mins|min|hrs|hr)\s+ago)/i);
-              if (match) list.push(match[1]);
+              // Relative match
+              const relMatch = text.match(/(\d+\s+(?:days|day|weeks|week|months|month|years|year|hours|hour|mins|min|hrs|hr)\s+ago)/i);
+              if (relMatch) list.push(relMatch[1]);
               if (text.toLowerCase().includes("yesterday")) list.push("yesterday");
+
+              // Absolute match: e.g. "June 7, 2026" or "7 June 2026"
+              const absMatch = text.match(/((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{1,2},\s+\d{4})/i) ||
+                               text.match(/(\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{4})/i);
+              if (absMatch) list.push(absMatch[1]);
             });
 
             // 3. Scan cite tags for dates
