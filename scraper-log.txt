@@ -1,0 +1,937 @@
+[1:55:53 pm] INFO: Starting lead search for: 'skin clinic in ahilyanagar'
+[1:55:53 pm] INFO: Launching Chromium browser (headless: false) with Playwright...
+[1:55:54 pm] INFO: Navigating directly to Google Maps search page: https://www.google.com/maps/search/skin%20clinic%20in%20ahilyanagar
+[1:55:58 pm] INFO: Checking for cookie consent / privacy screens...
+[1:55:58 pm] INFO: Waiting for search results feed...
+[1:55:59 pm] INFO: Scanning and scrolling business results panel...
+[1:55:59 pm] INFO: Scrolling... Found 6 business URLs so far...
+[1:56:01 pm] INFO: Scrolling... Found 12 business URLs so far...
+[1:56:02 pm] INFO: Scrolling... Found 18 business URLs so far...
+[1:56:03 pm] INFO: Scrolling... Found 20 business URLs so far...
+[1:56:05 pm] INFO: Scrolling... Found 20 business URLs so far...
+[1:56:06 pm] INFO: Scrolling... Found 24 business URLs so far...
+[1:56:07 pm] INFO: Scrolling... Found 28 business URLs so far...
+[1:56:09 pm] INFO: Scrolling... Found 31 business URLs so far...
+[1:56:10 pm] INFO: Scrolling... Found 31 business URLs so far...
+[1:56:12 pm] INFO: Scroller paused. No new listings found after multiple attempts.
+[1:56:12 pm] SUCCESS: Extraction complete! Found 31 total target URLs.
+[1:56:12 pm] INFO: --- Processing [1/31] ---
+[1:56:17 pm] WARN: Skipped: 'Dr Mithila Gadekar, SKINN REMEDY Skin, Hair and Laser Clinic / Best Skin & Hair Clinic/ Best Results in Ahmednagar.' (Already processed in processed-leads.json)
+[1:56:17 pm] INFO: --- Processing [2/31] ---
+[1:56:22 pm] WARN: Skipped: 'Charvi Skin and Cosmetic Clinic - Dr.Vedant Laddha' (Already processed in processed-leads.json)
+[1:56:22 pm] INFO: --- Processing [3/31] ---
+[1:56:28 pm] INFO: Within search radius: 4.44 km from search center.
+[1:56:28 pm] INFO: Analyzing website indicators for 'Pratibimb Skin & Hair Care Clinic - Dr. Poonam Vidhate'...
+[1:56:28 pm] INFO: Analyzing website: https://pratibimbskinhairclinicahmednagar.com/
+[1:56:30 pm] INFO: Analyzing Instagram presence for 'Pratibimb Skin & Hair Care Clinic - Dr. Poonam Vidhate'...
+[1:56:30 pm] INFO: Searching Google for Instagram profile: Pratibimb Skin & Hair Care Clinic - Dr. Poonam Vidhate Instagram
+[1:56:33 pm] INFO: Searching Google index for Instagram posts of pratibimbskinhairclinic: https://www.google.com/search?q=site%3Ainstagram.com%2Fpratibimbskinhairclinic
+[1:56:34 pm] INFO: Visiting Instagram profile directly as fallback: https://www.instagram.com/pratibimbskinhairclinic/?hl=en
+[1:56:34 pm] INFO: Analyzing Facebook presence for 'Pratibimb Skin & Hair Care Clinic - Dr. Poonam Vidhate'...
+[1:56:35 pm] INFO: Searching Google for Facebook page: Pratibimb Skin & Hair Care Clinic - Dr. Poonam Vidhate Facebook
+[1:56:37 pm] INFO: Visiting Facebook page to check last post date: https://www.facebook.com/pratibimbskinclinic/mentions/
+[1:56:39 pm] INFO: Analyzing LinkedIn presence for 'Pratibimb Skin & Hair Care Clinic - Dr. Poonam Vidhate'...
+[1:56:39 pm] INFO: Searching Google for LinkedIn presence: Pratibimb Skin & Hair Care Clinic - Dr. Poonam Vidhate LinkedIn
+[1:56:41 pm] INFO: No LinkedIn presence identified for: Pratibimb Skin & Hair Care Clinic - Dr. Poonam Vidhate
+[1:56:41 pm] 
+Found:
+Pratibimb Skin & Hair Care Clinic - Dr. Poonam Vidhate
+[1:56:41 pm] Website:
+WORKING
+[1:56:41 pm] Emails:
+pratibimbngr2016@gmail.com
+[1:56:41 pm] Google Analytics:
+Present
+[1:56:41 pm] Meta Pixel:
+Missing
+[1:56:41 pm] Instagram:
+ACTIVE
+[1:56:41 pm] Facebook:
+INACTIVE
+[1:56:41 pm] LinkedIn:
+NOT_FOUND
+[1:56:41 pm] Lead Score:
+70
+[1:56:41 pm] Priority:
+WARM
+
+[1:56:41 pm] INFO: Sending 'Pratibimb Skin & Hair Care Clinic - Dr. Poonam Vidhate' to webhook (Attempt 1/3)...
+[1:56:45 pm] SUCCESS: Webhook delivery successful for 'Pratibimb Skin & Hair Care Clinic - Dr. Poonam Vidhate'!
+[1:56:45 pm] INFO: Lead saved locally: Pratibimb Skin & Hair Care Clinic - Dr. Poonam Vidhate
+[1:56:45 pm] SUCCESS: Added To Sheet
+[1:56:45 pm] INFO: --- Processing [4/31] ---
+[1:56:50 pm] WARN: Skipped: 'Santushti skin clinic' (Already processed in processed-leads.json)
+[1:56:50 pm] INFO: --- Processing [5/31] ---
+[1:56:57 pm] WARN: Skipped: 'Dr. Shinde's Skin, hair, & Laser Clinic' (Already processed in processed-leads.json)
+[1:56:57 pm] INFO: --- Processing [6/31] ---
+[1:57:03 pm] WARN: Skipped: 'Dr.Bone Skin & Hair Clinic (Ayu) A.Nagar' (Already processed in processed-leads.json)
+[1:57:03 pm] INFO: --- Processing [7/31] ---
+[1:57:10 pm] WARN: Skipped: 'Dr. Palkar's Skin and Hair Clinic' (Already processed in processed-leads.json)
+[1:57:10 pm] INFO: --- Processing [8/31] ---
+[1:57:16 pm] INFO: Within search radius: 0.88 km from search center.
+[1:57:16 pm] INFO: Analyzing website indicators for 'Dr. Krishna Baldawa'...
+[1:57:16 pm] INFO: Analyzing website: https://drkrishnabaldawa.com/
+[1:57:17 pm] WARN: Website analysis failed or timed out for https://drkrishnabaldawa.com/: Error: page.evaluate: Execution context was destroyed, most likely because of a navigation
+[1:57:17 pm] INFO: Analyzing Instagram presence for 'Dr. Krishna Baldawa'...
+[1:57:17 pm] INFO: Searching Google for Instagram profile: Dr. Krishna Baldawa Instagram
+[1:57:19 pm] INFO: Searching Google index for Instagram posts of dr.krishnabaldawa: https://www.google.com/search?q=site%3Ainstagram.com%2Fdr.krishnabaldawa
+[1:57:20 pm] INFO: Visiting Instagram profile directly as fallback: https://www.instagram.com/dr.krishnabaldawa/
+[1:57:21 pm] INFO: Analyzing Facebook presence for 'Dr. Krishna Baldawa'...
+[1:57:21 pm] INFO: Searching Google for Facebook page: Dr. Krishna Baldawa Facebook
+[1:57:23 pm] INFO: Visiting Facebook page to check last post date: https://www.facebook.com/krishna.baldawa.5/
+[1:57:25 pm] INFO: Analyzing LinkedIn presence for 'Dr. Krishna Baldawa'...
+[1:57:25 pm] INFO: Searching Google for LinkedIn presence: Dr. Krishna Baldawa LinkedIn
+[1:57:28 pm] SUCCESS: LinkedIn page identified: https://in.linkedin.com/in/krishna-baldwa
+[1:57:28 pm] 
+Found:
+Dr. Krishna Baldawa
+[1:57:28 pm] Website:
+BROKEN
+[1:57:28 pm] Emails:
+None
+[1:57:28 pm] Google Analytics:
+Missing
+[1:57:28 pm] Meta Pixel:
+Missing
+[1:57:28 pm] Instagram:
+ACTIVE
+[1:57:28 pm] Facebook:
+ACTIVE
+[1:57:28 pm] LinkedIn:
+ACTIVE
+[1:57:28 pm] Lead Score:
+125
+[1:57:28 pm] Priority:
+HOT
+
+[1:57:28 pm] INFO: Sending 'Dr. Krishna Baldawa' to webhook (Attempt 1/3)...
+[1:57:32 pm] SUCCESS: Webhook delivery successful for 'Dr. Krishna Baldawa'!
+[1:57:32 pm] INFO: Lead saved locally: Dr. Krishna Baldawa
+[1:57:32 pm] SUCCESS: Added To Sheet
+[1:57:32 pm] INFO: --- Processing [9/31] ---
+[1:57:44 pm] WARN: Skipping place: Missing business name.
+[1:57:44 pm] INFO: --- Processing [10/31] ---
+[1:57:48 pm] WARN: Skipped: 'Dr Neelam’s Cosmo Skin & Hair Clinic' (Missing Phone Number)
+[1:57:48 pm] INFO: --- Processing [11/31] ---
+[1:57:53 pm] INFO: Within search radius: 1.86 km from search center.
+[1:57:53 pm] INFO: Analyzing website indicators for 'DerMedica Clinic- Delhi Gate (Ahilyanagar)'...
+[1:57:53 pm] INFO: Analyzing Instagram presence for 'DerMedica Clinic- Delhi Gate (Ahilyanagar)'...
+[1:57:53 pm] INFO: Searching Google for Instagram profile: DerMedica Clinic- Delhi Gate (Ahilyanagar) Instagram
+[1:57:56 pm] INFO: Searching Google index for Instagram posts of dermedica_clinic: https://www.google.com/search?q=site%3Ainstagram.com%2Fdermedica_clinic
+[1:57:57 pm] INFO: Visiting Instagram profile directly as fallback: https://www.instagram.com/dermedica_clinic/
+[1:57:58 pm] INFO: Analyzing Facebook presence for 'DerMedica Clinic- Delhi Gate (Ahilyanagar)'...
+[1:57:58 pm] INFO: Searching Google for Facebook page: DerMedica Clinic- Delhi Gate (Ahilyanagar) Facebook
+[1:58:01 pm] INFO: Analyzing LinkedIn presence for 'DerMedica Clinic- Delhi Gate (Ahilyanagar)'...
+[1:58:01 pm] INFO: Searching Google for LinkedIn presence: DerMedica Clinic- Delhi Gate (Ahilyanagar) LinkedIn
+[1:58:04 pm] SUCCESS: LinkedIn page identified: https://ae.linkedin.com/company/dermedica
+[1:58:04 pm] 
+Found:
+DerMedica Clinic- Delhi Gate (Ahilyanagar)
+[1:58:04 pm] Website:
+MISSING
+[1:58:04 pm] Emails:
+None
+[1:58:04 pm] Google Analytics:
+Missing
+[1:58:04 pm] Meta Pixel:
+Missing
+[1:58:04 pm] Instagram:
+ACTIVE
+[1:58:04 pm] Facebook:
+NOT_FOUND
+[1:58:04 pm] LinkedIn:
+ACTIVE
+[1:58:04 pm] Lead Score:
+125
+[1:58:04 pm] Priority:
+HOT
+
+[1:58:04 pm] INFO: Sending 'DerMedica Clinic- Delhi Gate (Ahilyanagar)' to webhook (Attempt 1/3)...
+[1:58:07 pm] ERROR: Attempt 1 failed for 'DerMedica Clinic- Delhi Gate (Ahilyanagar)' (status: 500): "<!DOCTYPE html><html><head><link rel=\"shortcut icon\" href=\"//ssl.gstatic.com/docs/script/images/favicon.ico\"><title>Error</title><style type=\"text/css\" nonce=\"5XNzHaNDwe5CipNHYqDIZA\">body {background-color: #fff; margin: 0; padding: 0;}.errorMessage {font-family: Arial,sans-serif; font-size: 12pt; font-weight: bold; line-height: 150%; padding-top: 25px;}</style></head><body style=\"margin:20px\"><div><img alt=\"Google Apps Script\" src=\"//ssl.gstatic.com/docs/script/images/logo.png\"></div><div style=\"text-align:center;font-family:monospace;margin:50px auto 0;max-width:600px\">The JavaScript runtime exited unexpectedly.</div></body></html>"
+[1:58:08 pm] INFO: Sending 'DerMedica Clinic- Delhi Gate (Ahilyanagar)' to webhook (Attempt 2/3)...
+[1:58:12 pm] SUCCESS: Webhook delivery successful for 'DerMedica Clinic- Delhi Gate (Ahilyanagar)'!
+[1:58:12 pm] INFO: Lead saved locally: DerMedica Clinic- Delhi Gate (Ahilyanagar)
+[1:58:12 pm] SUCCESS: Added To Sheet
+[1:58:12 pm] INFO: --- Processing [12/31] ---
+[1:58:16 pm] INFO: Within search radius: 2.11 km from search center.
+[1:58:16 pm] INFO: Analyzing website indicators for 'Amey skin and laser center'...
+[1:58:16 pm] INFO: Analyzing website: http://www.ameyskin.in/
+[1:58:16 pm] WARN: Website analysis failed or timed out for http://www.ameyskin.in/: Error: page.goto: net::ERR_NAME_NOT_RESOLVED at http://www.ameyskin.in/
+Call log:
+[2m  - navigating to "http://www.ameyskin.in/", waiting until "domcontentloaded"[22m
+
+[1:58:16 pm] INFO: Analyzing Instagram presence for 'Amey skin and laser center'...
+[1:58:17 pm] INFO: Searching Google for Instagram profile: Amey skin and laser center Instagram
+[1:58:18 pm] INFO: Searching Google index for Instagram posts of ameyskin_and_laser_center: https://www.google.com/search?q=site%3Ainstagram.com%2Fameyskin_and_laser_center
+[1:58:19 pm] INFO: Visiting Instagram profile directly as fallback: https://www.instagram.com/ameyskin_and_laser_center/
+[1:58:20 pm] INFO: Analyzing Facebook presence for 'Amey skin and laser center'...
+[1:58:20 pm] INFO: Searching Google for Facebook page: Amey skin and laser center Facebook
+[1:58:31 pm] INFO: Visiting Facebook page to check last post date: https://www.facebook.com/ameyskinandcosmeticlaser/
+[1:58:41 pm] WARN: Failed to inspect Facebook page directly: TimeoutError: page.goto: Timeout 10000ms exceeded.
+Call log:
+[2m  - navigating to "https://www.facebook.com/ameyskinandcosmeticlaser/", waiting until "domcontentloaded"[22m
+. Defaulting to status ACTIVE.
+[1:58:41 pm] INFO: Analyzing LinkedIn presence for 'Amey skin and laser center'...
+[1:58:41 pm] INFO: Searching Google for LinkedIn presence: Amey skin and laser center LinkedIn
+[1:58:53 pm] SUCCESS: LinkedIn page identified: https://in.linkedin.com/in/amey-kelkar-13645716b
+[1:58:53 pm] 
+Found:
+Amey skin and laser center
+[1:58:53 pm] Website:
+BROKEN
+[1:58:53 pm] Emails:
+None
+[1:58:53 pm] Google Analytics:
+Missing
+[1:58:53 pm] Meta Pixel:
+Missing
+[1:58:53 pm] Instagram:
+ACTIVE
+[1:58:53 pm] Facebook:
+ACTIVE
+[1:58:53 pm] LinkedIn:
+ACTIVE
+[1:58:53 pm] Lead Score:
+85
+[1:58:53 pm] Priority:
+WARM
+
+[1:58:53 pm] INFO: Sending 'Amey skin and laser center' to webhook (Attempt 1/3)...
+[1:58:56 pm] SUCCESS: Webhook delivery successful for 'Amey skin and laser center'!
+[1:58:56 pm] INFO: Lead saved locally: Amey skin and laser center
+[1:58:56 pm] SUCCESS: Added To Sheet
+[1:58:56 pm] INFO: --- Processing [13/31] ---
+[1:59:01 pm] INFO: Within search radius: 5.92 km from search center.
+[1:59:01 pm] INFO: Analyzing website indicators for '✅ 𝗘𝘁𝗲𝗿𝗻𝗮 𝗕𝘆 𝗗𝗿 𝗣𝗿𝗶𝘆𝗮𝗻𝗸𝗮 𝗣𝗮𝘁𝗶𝗹'...
+[1:59:01 pm] INFO: Analyzing website: http://www.eternaskinandwellness.com/
+[1:59:07 pm] INFO: Analyzing Instagram presence for '✅ 𝗘𝘁𝗲𝗿𝗻𝗮 𝗕𝘆 𝗗𝗿 𝗣𝗿𝗶𝘆𝗮𝗻𝗸𝗮 𝗣𝗮𝘁𝗶𝗹'...
+[1:59:07 pm] INFO: Searching Google for Instagram profile: ✅ 𝗘𝘁𝗲𝗿𝗻𝗮 𝗕𝘆 𝗗𝗿 𝗣𝗿𝗶𝘆𝗮𝗻𝗸𝗮 𝗣𝗮𝘁𝗶𝗹 Instagram
+[1:59:10 pm] INFO: Searching Google index for Instagram posts of the_skin_code: https://www.google.com/search?q=site%3Ainstagram.com%2Fthe_skin_code
+[1:59:10 pm] INFO: Visiting Instagram profile directly as fallback: https://www.instagram.com/the_skin_code/
+[1:59:12 pm] INFO: Analyzing Facebook presence for '✅ 𝗘𝘁𝗲𝗿𝗻𝗮 𝗕𝘆 𝗗𝗿 𝗣𝗿𝗶𝘆𝗮𝗻𝗸𝗮 𝗣𝗮𝘁𝗶𝗹'...
+[1:59:12 pm] INFO: Searching Google for Facebook page: ✅ 𝗘𝘁𝗲𝗿𝗻𝗮 𝗕𝘆 𝗗𝗿 𝗣𝗿𝗶𝘆𝗮𝗻𝗸𝗮 𝗣𝗮𝘁𝗶𝗹 Facebook
+[1:59:14 pm] INFO: Visiting Facebook page to check last post date: https://www.facebook.com/priyanka.patil12297/
+[1:59:16 pm] INFO: Analyzing LinkedIn presence for '✅ 𝗘𝘁𝗲𝗿𝗻𝗮 𝗕𝘆 𝗗𝗿 𝗣𝗿𝗶𝘆𝗮𝗻𝗸𝗮 𝗣𝗮𝘁𝗶𝗹'...
+[1:59:16 pm] INFO: Searching Google for LinkedIn presence: ✅ 𝗘𝘁𝗲𝗿𝗻𝗮 𝗕𝘆 𝗗𝗿 𝗣𝗿𝗶𝘆𝗮𝗻𝗸𝗮 𝗣𝗮𝘁𝗶𝗹 LinkedIn
+[1:59:18 pm] SUCCESS: LinkedIn page identified: https://in.linkedin.com/in/dr-priyanka-patil-7bb192277
+[1:59:18 pm] 
+Found:
+✅ 𝗘𝘁𝗲𝗿𝗻𝗮 𝗕𝘆 𝗗𝗿 𝗣𝗿𝗶𝘆𝗮𝗻𝗸𝗮 𝗣𝗮𝘁𝗶𝗹
+[1:59:18 pm] Website:
+WORKING
+[1:59:18 pm] Emails:
+contact@eternaclinic.com, info@eternaskinandwellnes.com
+[1:59:18 pm] Google Analytics:
+Missing
+[1:59:18 pm] Meta Pixel:
+Missing
+[1:59:18 pm] Instagram:
+ACTIVE
+[1:59:18 pm] Facebook:
+ACTIVE
+[1:59:18 pm] LinkedIn:
+ACTIVE
+[1:59:18 pm] Lead Score:
+40
+[1:59:18 pm] Priority:
+COLD
+
+[1:59:18 pm] INFO: Sending '✅ 𝗘𝘁𝗲𝗿𝗻𝗮 𝗕𝘆 𝗗𝗿 𝗣𝗿𝗶𝘆𝗮𝗻𝗸𝗮 𝗣𝗮𝘁𝗶𝗹' to webhook (Attempt 1/3)...
+[1:59:21 pm] SUCCESS: Webhook delivery successful for '✅ 𝗘𝘁𝗲𝗿𝗻𝗮 𝗕𝘆 𝗗𝗿 𝗣𝗿𝗶𝘆𝗮𝗻𝗸𝗮 𝗣𝗮𝘁𝗶𝗹'!
+[1:59:21 pm] INFO: Lead saved locally: ✅ 𝗘𝘁𝗲𝗿𝗻𝗮 𝗕𝘆 𝗗𝗿 𝗣𝗿𝗶𝘆𝗮𝗻𝗸𝗮 𝗣𝗮𝘁𝗶𝗹
+[1:59:21 pm] SUCCESS: Added To Sheet
+[1:59:21 pm] INFO: --- Processing [14/31] ---
+[1:59:26 pm] INFO: Within search radius: 1.60 km from search center.
+[1:59:26 pm] INFO: Analyzing website indicators for 'Dr. Arun Vaidya's Advait Clinic'...
+[1:59:26 pm] INFO: Analyzing Instagram presence for 'Dr. Arun Vaidya's Advait Clinic'...
+[1:59:26 pm] INFO: Searching Google for Instagram profile: Dr. Arun Vaidya's Advait Clinic Instagram
+[1:59:28 pm] INFO: Searching Google index for Instagram posts of advaitvaidya: https://www.google.com/search?q=site%3Ainstagram.com%2Fadvaitvaidya
+[1:59:29 pm] INFO: Visiting Instagram profile directly as fallback: https://www.instagram.com/advaitvaidya/
+[1:59:30 pm] INFO: Analyzing Facebook presence for 'Dr. Arun Vaidya's Advait Clinic'...
+[1:59:31 pm] INFO: Searching Google for Facebook page: Dr. Arun Vaidya's Advait Clinic Facebook
+[1:59:35 pm] INFO: Analyzing LinkedIn presence for 'Dr. Arun Vaidya's Advait Clinic'...
+[1:59:35 pm] INFO: Searching Google for LinkedIn presence: Dr. Arun Vaidya's Advait Clinic LinkedIn
+[1:59:37 pm] SUCCESS: LinkedIn page identified: https://in.linkedin.com/in/dr-arun-vaidya
+[1:59:37 pm] 
+Found:
+Dr. Arun Vaidya's Advait Clinic
+[1:59:37 pm] Website:
+MISSING
+[1:59:37 pm] Emails:
+None
+[1:59:37 pm] Google Analytics:
+Missing
+[1:59:37 pm] Meta Pixel:
+Missing
+[1:59:37 pm] Instagram:
+ACTIVE
+[1:59:37 pm] Facebook:
+NOT_FOUND
+[1:59:37 pm] LinkedIn:
+ACTIVE
+[1:59:37 pm] Lead Score:
+105
+[1:59:37 pm] Priority:
+HOT
+
+[1:59:37 pm] INFO: Sending 'Dr. Arun Vaidya's Advait Clinic' to webhook (Attempt 1/3)...
+[1:59:40 pm] SUCCESS: Webhook delivery successful for 'Dr. Arun Vaidya's Advait Clinic'!
+[1:59:40 pm] INFO: Lead saved locally: Dr. Arun Vaidya's Advait Clinic
+[1:59:40 pm] SUCCESS: Added To Sheet
+[1:59:40 pm] INFO: --- Processing [15/31] ---
+[1:59:44 pm] INFO: Within search radius: 1.59 km from search center.
+[1:59:44 pm] INFO: Analyzing website indicators for 'Advait Clinic'...
+[1:59:44 pm] INFO: Analyzing Instagram presence for 'Advait Clinic'...
+[1:59:44 pm] INFO: Searching Google for Instagram profile: Advait Clinic Instagram
+[1:59:46 pm] INFO: Searching Google index for Instagram posts of advait_clinic: https://www.google.com/search?q=site%3Ainstagram.com%2Fadvait_clinic
+[1:59:47 pm] INFO: Visiting Instagram profile directly as fallback: https://www.instagram.com/advait_clinic/
+[1:59:48 pm] INFO: Analyzing Facebook presence for 'Advait Clinic'...
+[1:59:48 pm] INFO: Searching Google for Facebook page: Advait Clinic Facebook
+[1:59:50 pm] INFO: Visiting Facebook page to check last post date: https://www.facebook.com/AdvaitClinic/
+[1:59:53 pm] INFO: Analyzing LinkedIn presence for 'Advait Clinic'...
+[1:59:53 pm] INFO: Searching Google for LinkedIn presence: Advait Clinic LinkedIn
+[1:59:55 pm] SUCCESS: LinkedIn page identified: https://in.linkedin.com/company/drashwinikulkarni
+[1:59:55 pm] 
+Found:
+Advait Clinic
+[1:59:55 pm] Website:
+MISSING
+[1:59:55 pm] Emails:
+None
+[1:59:55 pm] Google Analytics:
+Missing
+[1:59:55 pm] Meta Pixel:
+Missing
+[1:59:55 pm] Instagram:
+ACTIVE
+[1:59:55 pm] Facebook:
+ACTIVE
+[1:59:55 pm] LinkedIn:
+ACTIVE
+[1:59:55 pm] Lead Score:
+115
+[1:59:55 pm] Priority:
+HOT
+
+[1:59:55 pm] INFO: Sending 'Advait Clinic' to webhook (Attempt 1/3)...
+[1:59:59 pm] SUCCESS: Webhook delivery successful for 'Advait Clinic'!
+[1:59:59 pm] INFO: Lead saved locally: Advait Clinic
+[1:59:59 pm] SUCCESS: Added To Sheet
+[1:59:59 pm] INFO: --- Processing [16/31] ---
+[2:00:03 pm] INFO: Within search radius: 3.84 km from search center.
+[2:00:03 pm] INFO: Analyzing website indicators for 'Shri Vishwasanjeevani Laser Cosmetic Center'...
+[2:00:03 pm] INFO: Analyzing website: http://www.vishwasanjeevaniayurved.com/
+[2:00:04 pm] WARN: Website analysis failed or timed out for http://www.vishwasanjeevaniayurved.com/: Error: page.goto: net::ERR_NAME_NOT_RESOLVED at http://www.vishwasanjeevaniayurved.com/
+Call log:
+[2m  - navigating to "http://www.vishwasanjeevaniayurved.com/", waiting until "domcontentloaded"[22m
+
+[2:00:04 pm] INFO: Analyzing Instagram presence for 'Shri Vishwasanjeevani Laser Cosmetic Center'...
+[2:00:04 pm] INFO: Searching Google for Instagram profile: Shri Vishwasanjeevani Laser Cosmetic Center Instagram
+[2:00:06 pm] INFO: Visiting Instagram profile directly as fallback: https://www.instagram.com/explore/locations/275497792903772/shri-vishwasanjeevani-ayurved-advance-cosmetic-laser-center/
+[2:00:07 pm] INFO: Analyzing Facebook presence for 'Shri Vishwasanjeevani Laser Cosmetic Center'...
+[2:00:08 pm] INFO: Searching Google for Facebook page: Shri Vishwasanjeevani Laser Cosmetic Center Facebook
+[2:00:11 pm] INFO: Visiting Facebook page to check last post date: https://www.facebook.com/shrivishwasanjeevaniayurved/videos/626877750520753/
+[2:00:13 pm] INFO: Analyzing LinkedIn presence for 'Shri Vishwasanjeevani Laser Cosmetic Center'...
+[2:00:14 pm] INFO: Searching Google for LinkedIn presence: Shri Vishwasanjeevani Laser Cosmetic Center LinkedIn
+[2:00:16 pm] INFO: No LinkedIn presence identified for: Shri Vishwasanjeevani Laser Cosmetic Center
+[2:00:16 pm] 
+Found:
+Shri Vishwasanjeevani Laser Cosmetic Center
+[2:00:16 pm] Website:
+BROKEN
+[2:00:16 pm] Emails:
+None
+[2:00:16 pm] Google Analytics:
+Missing
+[2:00:16 pm] Meta Pixel:
+Missing
+[2:00:16 pm] Instagram:
+ACTIVE
+[2:00:16 pm] Facebook:
+ACTIVE
+[2:00:16 pm] LinkedIn:
+NOT_FOUND
+[2:00:16 pm] Lead Score:
+115
+[2:00:16 pm] Priority:
+HOT
+
+[2:00:16 pm] INFO: Sending 'Shri Vishwasanjeevani Laser Cosmetic Center' to webhook (Attempt 1/3)...
+[2:00:20 pm] SUCCESS: Webhook delivery successful for 'Shri Vishwasanjeevani Laser Cosmetic Center'!
+[2:00:20 pm] INFO: Lead saved locally: Shri Vishwasanjeevani Laser Cosmetic Center
+[2:00:20 pm] SUCCESS: Added To Sheet
+[2:00:20 pm] INFO: --- Processing [17/31] ---
+[2:00:23 pm] WARN: Skipped: 'Dr. Amit Shinde- Dermatologist In Ahmednagar' (Missing Phone Number)
+[2:00:23 pm] INFO: --- Processing [18/31] ---
+[2:00:29 pm] INFO: Within search radius: 1.91 km from search center.
+[2:00:29 pm] INFO: Analyzing website indicators for 'Dr. Khadamkar (Skin Specialist)'...
+[2:00:29 pm] INFO: Analyzing Instagram presence for 'Dr. Khadamkar (Skin Specialist)'...
+[2:00:29 pm] INFO: Searching Google for Instagram profile: Dr. Khadamkar (Skin Specialist) Instagram
+[2:00:32 pm] INFO: Searching Google index for Instagram posts of popular: https://www.google.com/search?q=site%3Ainstagram.com%2Fpopular
+[2:00:33 pm] INFO: Visiting Instagram profile directly as fallback: https://www.instagram.com/popular/dr-khadamkar-skin-specialist-ahmednagar/
+[2:00:35 pm] INFO: Analyzing Facebook presence for 'Dr. Khadamkar (Skin Specialist)'...
+[2:00:35 pm] INFO: Searching Google for Facebook page: Dr. Khadamkar (Skin Specialist) Facebook
+[2:00:37 pm] INFO: Visiting Facebook page to check last post date: https://www.facebook.com/740865862753299/
+[2:00:40 pm] INFO: Analyzing LinkedIn presence for 'Dr. Khadamkar (Skin Specialist)'...
+[2:00:40 pm] INFO: Searching Google for LinkedIn presence: Dr. Khadamkar (Skin Specialist) LinkedIn
+[2:00:42 pm] SUCCESS: LinkedIn page identified: https://in.linkedin.com/in/omkar-khadamkar-404ba916a
+[2:00:42 pm] 
+Found:
+Dr. Khadamkar (Skin Specialist)
+[2:00:42 pm] Website:
+MISSING
+[2:00:42 pm] Emails:
+None
+[2:00:42 pm] Google Analytics:
+Missing
+[2:00:42 pm] Meta Pixel:
+Missing
+[2:00:42 pm] Instagram:
+ACTIVE
+[2:00:42 pm] Facebook:
+ACTIVE
+[2:00:42 pm] LinkedIn:
+ACTIVE
+[2:00:42 pm] Lead Score:
+95
+[2:00:42 pm] Priority:
+WARM
+
+[2:00:42 pm] INFO: Sending 'Dr. Khadamkar (Skin Specialist)' to webhook (Attempt 1/3)...
+[2:00:46 pm] SUCCESS: Webhook delivery successful for 'Dr. Khadamkar (Skin Specialist)'!
+[2:00:46 pm] INFO: Lead saved locally: Dr. Khadamkar (Skin Specialist)
+[2:00:46 pm] SUCCESS: Added To Sheet
+[2:00:46 pm] INFO: --- Processing [19/31] ---
+[2:00:50 pm] INFO: Within search radius: 1.85 km from search center.
+[2:00:50 pm] INFO: Analyzing website indicators for 'Om Clinic : |Skin Specialist ,Hair Treatment,Piles Specialist Clinic| In Ahmednagar'...
+[2:00:50 pm] INFO: Analyzing Instagram presence for 'Om Clinic : |Skin Specialist ,Hair Treatment,Piles Specialist Clinic| In Ahmednagar'...
+[2:00:50 pm] INFO: Searching Google for Instagram profile: Om Clinic : |Skin Specialist ,Hair Treatment,Piles Specialist Clinic| In Ahmednagar Instagram
+[2:00:53 pm] INFO: Searching Google index for Instagram posts of dradulkaromskinclinic: https://www.google.com/search?q=site%3Ainstagram.com%2Fdradulkaromskinclinic
+[2:00:54 pm] INFO: Visiting Instagram profile directly as fallback: https://www.instagram.com/dradulkaromskinclinic/
+[2:00:55 pm] INFO: Analyzing Facebook presence for 'Om Clinic : |Skin Specialist ,Hair Treatment,Piles Specialist Clinic| In Ahmednagar'...
+[2:00:55 pm] INFO: Searching Google for Facebook page: Om Clinic : |Skin Specialist ,Hair Treatment,Piles Specialist Clinic| In Ahmednagar Facebook
+[2:00:58 pm] INFO: Visiting Facebook page to check last post date: https://www.facebook.com/om.clinic.and.skin.care/videos/
+[2:01:00 pm] INFO: Analyzing LinkedIn presence for 'Om Clinic : |Skin Specialist ,Hair Treatment,Piles Specialist Clinic| In Ahmednagar'...
+[2:01:00 pm] INFO: Searching Google for LinkedIn presence: Om Clinic : |Skin Specialist ,Hair Treatment,Piles Specialist Clinic| In Ahmednagar LinkedIn
+[2:01:02 pm] SUCCESS: LinkedIn page identified: https://in.linkedin.com/in/dr-mahendra-shinde-76005245
+[2:01:02 pm] 
+Found:
+Om Clinic : |Skin Specialist ,Hair Treatment,Piles Specialist Clinic| In Ahmednagar
+[2:01:02 pm] Website:
+MISSING
+[2:01:02 pm] Emails:
+None
+[2:01:02 pm] Google Analytics:
+Missing
+[2:01:02 pm] Meta Pixel:
+Missing
+[2:01:02 pm] Instagram:
+ACTIVE
+[2:01:02 pm] Facebook:
+ACTIVE
+[2:01:02 pm] LinkedIn:
+ACTIVE
+[2:01:02 pm] Lead Score:
+95
+[2:01:02 pm] Priority:
+WARM
+
+[2:01:02 pm] INFO: Sending 'Om Clinic : |Skin Specialist ,Hair Treatment,Piles Specialist Clinic| In Ahmednagar' to webhook (Attempt 1/3)...
+[2:01:06 pm] SUCCESS: Webhook delivery successful for 'Om Clinic : |Skin Specialist ,Hair Treatment,Piles Specialist Clinic| In Ahmednagar'!
+[2:01:06 pm] INFO: Lead saved locally: Om Clinic : |Skin Specialist ,Hair Treatment,Piles Specialist Clinic| In Ahmednagar
+[2:01:06 pm] SUCCESS: Added To Sheet
+[2:01:06 pm] INFO: --- Processing [20/31] ---
+[2:01:09 pm] WARN: Skipped: 'Kirti Skin & Haircare Center' (Missing Phone Number)
+[2:01:09 pm] INFO: --- Processing [21/31] ---
+[2:01:14 pm] INFO: Within search radius: 3.70 km from search center.
+[2:01:14 pm] INFO: Analyzing website indicators for 'Phoenix skin, hair, laser clinic and spa'...
+[2:01:14 pm] INFO: Analyzing Instagram presence for 'Phoenix skin, hair, laser clinic and spa'...
+[2:01:14 pm] INFO: Searching Google for Instagram profile: Phoenix skin, hair, laser clinic and spa Instagram
+[2:01:16 pm] INFO: Searching Google index for Instagram posts of phoenix_skin_hair: https://www.google.com/search?q=site%3Ainstagram.com%2Fphoenix_skin_hair
+[2:01:17 pm] INFO: Visiting Instagram profile directly as fallback: https://www.instagram.com/phoenix_skin_hair/
+[2:01:18 pm] INFO: Analyzing Facebook presence for 'Phoenix skin, hair, laser clinic and spa'...
+[2:01:18 pm] INFO: Searching Google for Facebook page: Phoenix skin, hair, laser clinic and spa Facebook
+[2:01:21 pm] INFO: Visiting Facebook page to check last post date: https://www.facebook.com/phoenix.ahmednagar/
+[2:01:23 pm] INFO: Analyzing LinkedIn presence for 'Phoenix skin, hair, laser clinic and spa'...
+[2:01:24 pm] INFO: Searching Google for LinkedIn presence: Phoenix skin, hair, laser clinic and spa LinkedIn
+[2:01:26 pm] SUCCESS: LinkedIn page identified: https://il.linkedin.com/company/phoenix-skin-dermatology
+[2:01:26 pm] 
+Found:
+Phoenix skin, hair, laser clinic and spa
+[2:01:26 pm] Website:
+MISSING
+[2:01:26 pm] Emails:
+None
+[2:01:26 pm] Google Analytics:
+Missing
+[2:01:26 pm] Meta Pixel:
+Missing
+[2:01:26 pm] Instagram:
+ACTIVE
+[2:01:26 pm] Facebook:
+ACTIVE
+[2:01:26 pm] LinkedIn:
+ACTIVE
+[2:01:26 pm] Lead Score:
+95
+[2:01:26 pm] Priority:
+WARM
+
+[2:01:26 pm] INFO: Sending 'Phoenix skin, hair, laser clinic and spa' to webhook (Attempt 1/3)...
+[2:01:30 pm] SUCCESS: Webhook delivery successful for 'Phoenix skin, hair, laser clinic and spa'!
+[2:01:30 pm] INFO: Lead saved locally: Phoenix skin, hair, laser clinic and spa
+[2:01:30 pm] SUCCESS: Added To Sheet
+[2:01:30 pm] INFO: --- Processing [22/31] ---
+[2:01:36 pm] INFO: Within search radius: 6.85 km from search center.
+[2:01:36 pm] INFO: Analyzing website indicators for 'Sukanya Clinic - Skin Beauty and ayurved Clinic'...
+[2:01:36 pm] INFO: Analyzing website: https://sukanyaayurveda.com/
+[2:01:37 pm] WARN: Website analysis failed or timed out for https://sukanyaayurveda.com/: Error: page.goto: net::ERR_NAME_NOT_RESOLVED at https://sukanyaayurveda.com/
+Call log:
+[2m  - navigating to "https://sukanyaayurveda.com/", waiting until "domcontentloaded"[22m
+
+[2:01:37 pm] INFO: Analyzing Instagram presence for 'Sukanya Clinic - Skin Beauty and ayurved Clinic'...
+[2:01:37 pm] INFO: Searching Google for Instagram profile: Sukanya Clinic - Skin Beauty and ayurved Clinic Instagram
+[2:01:39 pm] INFO: Searching Google index for Instagram posts of dr.sukanyas_cosmetic_clinic: https://www.google.com/search?q=site%3Ainstagram.com%2Fdr.sukanyas_cosmetic_clinic
+[2:01:40 pm] INFO: Visiting Instagram profile directly as fallback: https://www.instagram.com/dr.sukanyas_cosmetic_clinic/
+[2:01:41 pm] INFO: Analyzing Facebook presence for 'Sukanya Clinic - Skin Beauty and ayurved Clinic'...
+[2:01:41 pm] INFO: Searching Google for Facebook page: Sukanya Clinic - Skin Beauty and ayurved Clinic Facebook
+[2:01:43 pm] INFO: Visiting Facebook page to check last post date: https://www.facebook.com/p/Sukanya-Skin-Beauty-and-Ayurved-Clinic-61565065593544/
+[2:01:45 pm] INFO: Analyzing LinkedIn presence for 'Sukanya Clinic - Skin Beauty and ayurved Clinic'...
+[2:01:47 pm] INFO: Searching Google for LinkedIn presence: Sukanya Clinic - Skin Beauty and ayurved Clinic LinkedIn
+[2:01:49 pm] SUCCESS: LinkedIn page identified: https://in.linkedin.com/in/dr-sukanya-k-074550204
+[2:01:49 pm] 
+Found:
+Sukanya Clinic - Skin Beauty and ayurved Clinic
+[2:01:49 pm] Website:
+BROKEN
+[2:01:49 pm] Emails:
+None
+[2:01:49 pm] Google Analytics:
+Missing
+[2:01:49 pm] Meta Pixel:
+Missing
+[2:01:49 pm] Instagram:
+ACTIVE
+[2:01:49 pm] Facebook:
+ACTIVE
+[2:01:49 pm] LinkedIn:
+ACTIVE
+[2:01:49 pm] Lead Score:
+105
+[2:01:49 pm] Priority:
+HOT
+
+[2:01:49 pm] INFO: Sending 'Sukanya Clinic - Skin Beauty and ayurved Clinic' to webhook (Attempt 1/3)...
+[2:01:52 pm] SUCCESS: Webhook delivery successful for 'Sukanya Clinic - Skin Beauty and ayurved Clinic'!
+[2:01:52 pm] INFO: Lead saved locally: Sukanya Clinic - Skin Beauty and ayurved Clinic
+[2:01:52 pm] SUCCESS: Added To Sheet
+[2:01:52 pm] INFO: --- Processing [23/31] ---
+[2:01:56 pm] WARN: Skipped: 'SHARADA CLINIC' (Missing Phone Number)
+[2:01:56 pm] INFO: --- Processing [24/31] ---
+[2:02:00 pm] INFO: Within search radius: 7.06 km from search center.
+[2:02:00 pm] INFO: Analyzing website indicators for 'Shri Sai hospital & Rupved skin clinic'...
+[2:02:00 pm] INFO: Analyzing Instagram presence for 'Shri Sai hospital & Rupved skin clinic'...
+[2:02:00 pm] INFO: Searching Google for Instagram profile: Shri Sai hospital & Rupved skin clinic Instagram
+[2:02:03 pm] INFO: Searching Google index for Instagram posts of rupved_skin_clinic_saihospital: https://www.google.com/search?q=site%3Ainstagram.com%2Frupved_skin_clinic_saihospital
+[2:02:04 pm] INFO: Visiting Instagram profile directly as fallback: https://www.instagram.com/rupved_skin_clinic_saihospital/
+[2:02:06 pm] INFO: Analyzing Facebook presence for 'Shri Sai hospital & Rupved skin clinic'...
+[2:02:06 pm] INFO: Searching Google for Facebook page: Shri Sai hospital & Rupved skin clinic Facebook
+[2:02:08 pm] INFO: Visiting Facebook page to check last post date: https://www.facebook.com/61559287927447?locale=en_GB
+[2:02:11 pm] INFO: Analyzing LinkedIn presence for 'Shri Sai hospital & Rupved skin clinic'...
+[2:02:11 pm] INFO: Searching Google for LinkedIn presence: Shri Sai hospital & Rupved skin clinic LinkedIn
+[2:02:14 pm] SUCCESS: LinkedIn page identified: https://in.linkedin.com/company/shri-sai-hospital---india
+[2:02:14 pm] 
+Found:
+Shri Sai hospital & Rupved skin clinic
+[2:02:14 pm] Website:
+MISSING
+[2:02:14 pm] Emails:
+None
+[2:02:14 pm] Google Analytics:
+Missing
+[2:02:14 pm] Meta Pixel:
+Missing
+[2:02:14 pm] Instagram:
+ACTIVE
+[2:02:14 pm] Facebook:
+ACTIVE
+[2:02:14 pm] LinkedIn:
+ACTIVE
+[2:02:14 pm] Lead Score:
+115
+[2:02:14 pm] Priority:
+HOT
+
+[2:02:14 pm] INFO: Sending 'Shri Sai hospital & Rupved skin clinic' to webhook (Attempt 1/3)...
+[2:02:17 pm] SUCCESS: Webhook delivery successful for 'Shri Sai hospital & Rupved skin clinic'!
+[2:02:17 pm] INFO: Lead saved locally: Shri Sai hospital & Rupved skin clinic
+[2:02:17 pm] SUCCESS: Added To Sheet
+[2:02:17 pm] INFO: --- Processing [25/31] ---
+[2:02:22 pm] WARN: Skipped: 'Shivansh Skin & Hair Care Clinic' (Missing Phone Number)
+[2:02:22 pm] INFO: --- Processing [26/31] ---
+[2:02:26 pm] INFO: Within search radius: 1.85 km from search center.
+[2:02:26 pm] INFO: Analyzing website indicators for 'Sparrsh Skin Hair Clinic'...
+[2:02:26 pm] INFO: Analyzing Instagram presence for 'Sparrsh Skin Hair Clinic'...
+[2:02:26 pm] INFO: Searching Google for Instagram profile: Sparrsh Skin Hair Clinic Instagram
+[2:02:28 pm] INFO: Searching Google index for Instagram posts of sparsh_skin_clinic_: https://www.google.com/search?q=site%3Ainstagram.com%2Fsparsh_skin_clinic_
+[2:02:29 pm] SUCCESS: Instagram last post date extracted via Google: 2026-05-15 (Status: ACTIVE)
+[2:02:29 pm] INFO: Analyzing Facebook presence for 'Sparrsh Skin Hair Clinic'...
+[2:02:29 pm] INFO: Searching Google for Facebook page: Sparrsh Skin Hair Clinic Facebook
+[2:02:31 pm] INFO: Visiting Facebook page to check last post date: https://www.facebook.com/100063600953098/?locale=te_IN
+[2:02:34 pm] INFO: Analyzing LinkedIn presence for 'Sparrsh Skin Hair Clinic'...
+[2:02:34 pm] INFO: Searching Google for LinkedIn presence: Sparrsh Skin Hair Clinic LinkedIn
+[2:02:36 pm] SUCCESS: LinkedIn page identified: https://in.linkedin.com/in/sparsh-skin-hair-laser-clinic-aundh-pune-19aa141a6
+[2:02:36 pm] 
+Found:
+Sparrsh Skin Hair Clinic
+[2:02:36 pm] Website:
+MISSING
+[2:02:36 pm] Emails:
+None
+[2:02:36 pm] Google Analytics:
+Missing
+[2:02:36 pm] Meta Pixel:
+Missing
+[2:02:36 pm] Instagram:
+ACTIVE
+[2:02:36 pm] Facebook:
+ACTIVE
+[2:02:36 pm] LinkedIn:
+ACTIVE
+[2:02:36 pm] Lead Score:
+95
+[2:02:36 pm] Priority:
+WARM
+
+[2:02:36 pm] INFO: Sending 'Sparrsh Skin Hair Clinic' to webhook (Attempt 1/3)...
+[2:02:40 pm] SUCCESS: Webhook delivery successful for 'Sparrsh Skin Hair Clinic'!
+[2:02:40 pm] INFO: Lead saved locally: Sparrsh Skin Hair Clinic
+[2:02:40 pm] SUCCESS: Added To Sheet
+[2:02:40 pm] INFO: --- Processing [27/31] ---
+[2:02:44 pm] WARN: Skipped: 'DR.VRUSHALI'S SKIN CARE CLINIC' (Missing Phone Number)
+[2:02:44 pm] INFO: --- Processing [28/31] ---
+[2:02:47 pm] INFO: Within search radius: 1.87 km from search center.
+[2:02:47 pm] INFO: Analyzing website indicators for 'Glo Skin And Hair Clinic'...
+[2:02:47 pm] INFO: Analyzing Instagram presence for 'Glo Skin And Hair Clinic'...
+[2:02:47 pm] INFO: Searching Google for Instagram profile: Glo Skin And Hair Clinic Instagram
+[2:02:49 pm] INFO: Searching Google index for Instagram posts of adgrohairclinicofficial: https://www.google.com/search?q=site%3Ainstagram.com%2Fadgrohairclinicofficial
+[2:02:50 pm] SUCCESS: Instagram last post date extracted via Google: 2026-05-21 (Status: ACTIVE)
+[2:02:50 pm] INFO: Analyzing Facebook presence for 'Glo Skin And Hair Clinic'...
+[2:02:50 pm] INFO: Searching Google for Facebook page: Glo Skin And Hair Clinic Facebook
+[2:02:52 pm] INFO: Visiting Facebook page to check last post date: https://www.facebook.com/GlowSkinClinicinBaner/
+[2:02:54 pm] INFO: Analyzing LinkedIn presence for 'Glo Skin And Hair Clinic'...
+[2:02:54 pm] INFO: Searching Google for LinkedIn presence: Glo Skin And Hair Clinic LinkedIn
+[2:02:55 pm] SUCCESS: LinkedIn page identified: https://www.linkedin.com/company/advanced-grohair-gloskin
+[2:02:55 pm] 
+Found:
+Glo Skin And Hair Clinic
+[2:02:55 pm] Website:
+MISSING
+[2:02:55 pm] Emails:
+None
+[2:02:55 pm] Google Analytics:
+Missing
+[2:02:55 pm] Meta Pixel:
+Missing
+[2:02:55 pm] Instagram:
+ACTIVE
+[2:02:55 pm] Facebook:
+ACTIVE
+[2:02:55 pm] LinkedIn:
+ACTIVE
+[2:02:55 pm] Lead Score:
+115
+[2:02:55 pm] Priority:
+HOT
+
+[2:02:55 pm] INFO: Sending 'Glo Skin And Hair Clinic' to webhook (Attempt 1/3)...
+[2:02:59 pm] SUCCESS: Webhook delivery successful for 'Glo Skin And Hair Clinic'!
+[2:02:59 pm] INFO: Lead saved locally: Glo Skin And Hair Clinic
+[2:02:59 pm] SUCCESS: Added To Sheet
+[2:02:59 pm] INFO: --- Processing [29/31] ---
+[2:03:04 pm] WARN: Skipped: 'Bhoite Aesthetic Centre' (Missing Phone Number)
+[2:03:04 pm] INFO: --- Processing [30/31] ---
+[2:03:07 pm] INFO: Within search radius: 0.47 km from search center.
+[2:03:07 pm] INFO: Analyzing website indicators for 'Dr. M K Shaikh'...
+[2:03:07 pm] INFO: Analyzing Instagram presence for 'Dr. M K Shaikh'...
+[2:03:07 pm] INFO: Searching Google for Instagram profile: Dr. M K Shaikh Instagram
+[2:03:09 pm] INFO: Searching Google index for Instagram posts of dr_mohsin6767: https://www.google.com/search?q=site%3Ainstagram.com%2Fdr_mohsin6767
+[2:03:11 pm] INFO: Visiting Instagram profile directly as fallback: https://www.instagram.com/dr_mohsin6767/
+[2:03:12 pm] INFO: Analyzing Facebook presence for 'Dr. M K Shaikh'...
+[2:03:12 pm] INFO: Searching Google for Facebook page: Dr. M K Shaikh Facebook
+[2:03:14 pm] INFO: Visiting Facebook page to check last post date: https://www.facebook.com/jpesthetik/photos/dr-mkshaikh-sir-practising-dermatologist-and-cosmetologist-ahmednagar-mh-indiadr/184656713090717/
+[2:03:17 pm] INFO: Analyzing LinkedIn presence for 'Dr. M K Shaikh'...
+[2:03:17 pm] INFO: Searching Google for LinkedIn presence: Dr. M K Shaikh LinkedIn
+[2:03:19 pm] SUCCESS: LinkedIn page identified: https://in.linkedin.com/in/dr-ruhan-m-shaikh-3500a4270
+[2:03:19 pm] 
+Found:
+Dr. M K Shaikh
+[2:03:19 pm] Website:
+MISSING
+[2:03:19 pm] Emails:
+None
+[2:03:19 pm] Google Analytics:
+Missing
+[2:03:19 pm] Meta Pixel:
+Missing
+[2:03:19 pm] Instagram:
+ACTIVE
+[2:03:19 pm] Facebook:
+INACTIVE
+[2:03:19 pm] LinkedIn:
+ACTIVE
+[2:03:19 pm] Lead Score:
+125
+[2:03:19 pm] Priority:
+HOT
+
+[2:03:19 pm] INFO: Sending 'Dr. M K Shaikh' to webhook (Attempt 1/3)...
+[2:03:22 pm] SUCCESS: Webhook delivery successful for 'Dr. M K Shaikh'!
+[2:03:22 pm] INFO: Lead saved locally: Dr. M K Shaikh
+[2:03:22 pm] SUCCESS: Added To Sheet
+[2:03:22 pm] INFO: --- Processing [31/31] ---
+[2:03:26 pm] INFO: Within search radius: 4.23 km from search center.
+[2:03:26 pm] INFO: Analyzing website indicators for 'Dr Karale's Shri Vishwasanjeevani Ayurveda'...
+[2:03:26 pm] INFO: Analyzing website: https://id.vyaparify.com/shri-vishwasanjeevani
+[2:03:31 pm] INFO: Analyzing Instagram presence for 'Dr Karale's Shri Vishwasanjeevani Ayurveda'...
+[2:03:31 pm] INFO: Searching Google for Instagram profile: Dr Karale's Shri Vishwasanjeevani Ayurveda Instagram
+[2:03:34 pm] INFO: Searching Google index for Instagram posts of dr_sanjeevani_karale: https://www.google.com/search?q=site%3Ainstagram.com%2Fdr_sanjeevani_karale
+[2:03:35 pm] INFO: Visiting Instagram profile directly as fallback: https://www.instagram.com/dr_sanjeevani_karale/
+[2:03:36 pm] INFO: Analyzing Facebook presence for 'Dr Karale's Shri Vishwasanjeevani Ayurveda'...
+[2:03:36 pm] INFO: Searching Google for Facebook page: Dr Karale's Shri Vishwasanjeevani Ayurveda Facebook
+[2:03:37 pm] INFO: Visiting Facebook page to check last post date: https://www.facebook.com/100057500826340/videos/
+[2:03:39 pm] INFO: Analyzing LinkedIn presence for 'Dr Karale's Shri Vishwasanjeevani Ayurveda'...
+[2:03:40 pm] INFO: Searching Google for LinkedIn presence: Dr Karale's Shri Vishwasanjeevani Ayurveda LinkedIn
+[2:03:42 pm] INFO: No LinkedIn presence identified for: Dr Karale's Shri Vishwasanjeevani Ayurveda
+[2:03:42 pm] 
+Found:
+Dr Karale's Shri Vishwasanjeevani Ayurveda
+[2:03:42 pm] Website:
+WORKING
+[2:03:42 pm] Emails:
+sanjeevanikarale28@gmail.com
+[2:03:42 pm] Google Analytics:
+Missing
+[2:03:42 pm] Meta Pixel:
+Present
+[2:03:42 pm] Instagram:
+ACTIVE
+[2:03:42 pm] Facebook:
+ACTIVE
+[2:03:42 pm] LinkedIn:
+NOT_FOUND
+[2:03:42 pm] Lead Score:
+40
+[2:03:42 pm] Priority:
+COLD
+
+[2:03:42 pm] INFO: Sending 'Dr Karale's Shri Vishwasanjeevani Ayurveda' to webhook (Attempt 1/3)...
+[2:03:45 pm] SUCCESS: Webhook delivery successful for 'Dr Karale's Shri Vishwasanjeevani Ayurveda'!
+[2:03:45 pm] INFO: Lead saved locally: Dr Karale's Shri Vishwasanjeevani Ayurveda
+[2:03:45 pm] SUCCESS: Added To Sheet
+[2:03:46 pm] 
+================================
+
+[2:03:46 pm] SEARCH COMPLETE
+
+[2:03:46 pm] Business Type:
+skin clinic
+
+[2:03:46 pm] Location:
+ahilyanagar
+
+[2:03:46 pm] Businesses Scanned:
+31
+
+[2:03:46 pm] Without Website:
+14
+
+[2:03:46 pm] Added To Sheet:
+17
+
+[2:03:46 pm] Failed:
+0
+
+[2:03:46 pm] Execution Time:
+7m 52s
+
+[2:03:46 pm] ================================
+
+[2:05:32 pm] INFO: Fetching active leads list directly from Google Sheet...
+[2:05:35 pm] SUCCESS: Successfully fetched 26 leads from Google Sheet.
+[2:05:35 pm] INFO: Starting automated outreach campaign (LIVE) for 26 leads...
+[2:05:35 pm] INFO: Campaign dispatching lead 1/26: Dr Mithila Gadekar, SKINN REMEDY Skin, Hair and Laser Clinic / Best Skin & Hair Clinic/ Best Results in Ahmednagar.
+[2:05:35 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'Dr Mithila Gadekar, SKINN REMEDY Skin, Hair and Laser Clinic / Best Skin & Hair Clinic/ Best Results in Ahmednagar.'
+[2:05:35 pm] INFO: Campaign sending WhatsApp to Dr Mithila Gadekar, SKINN REMEDY Skin, Hair and Laser Clinic / Best Skin & Hair Clinic/ Best Results in Ahmednagar. (083294 42664)...
+[2:05:35 pm] INFO: Sending automated WhatsApp outreach message to: 918329442664@c.us
+[2:05:35 pm] SUCCESS: WhatsApp outreach successfully sent to 083294 42664!
+[2:05:39 pm] SUCCESS: Synchronized outreach status for 'Dr Mithila Gadekar, SKINN REMEDY Skin, Hair and Laser Clinic / Best Skin & Hair Clinic/ Best Results in Ahmednagar.' back to Google Sheet.
+[2:05:39 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:05:59 pm] INFO: Campaign dispatching lead 2/26: Charvi Skin and Cosmetic Clinic - Dr.Vedant Laddha
+[2:05:59 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'Charvi Skin and Cosmetic Clinic - Dr.Vedant Laddha'
+[2:05:59 pm] INFO: Campaign sending WhatsApp to Charvi Skin and Cosmetic Clinic - Dr.Vedant Laddha (077580 50464)...
+[2:05:59 pm] INFO: Sending automated WhatsApp outreach message to: 917758050464@c.us
+[2:05:59 pm] SUCCESS: WhatsApp outreach successfully sent to 077580 50464!
+[2:06:03 pm] SUCCESS: Synchronized outreach status for 'Charvi Skin and Cosmetic Clinic - Dr.Vedant Laddha' back to Google Sheet.
+[2:06:03 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:06:23 pm] INFO: Campaign dispatching lead 3/26: Santushti skin clinic
+[2:06:23 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'Santushti skin clinic'
+[2:06:23 pm] INFO: Campaign sending WhatsApp to Santushti skin clinic (098005 85888)...
+[2:06:23 pm] INFO: Sending automated WhatsApp outreach message to: 919800585888@c.us
+[2:06:23 pm] SUCCESS: WhatsApp outreach successfully sent to 098005 85888!
+[2:06:27 pm] SUCCESS: Synchronized outreach status for 'Santushti skin clinic' back to Google Sheet.
+[2:06:27 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:06:47 pm] INFO: Campaign dispatching lead 4/26: Dr. Shinde's Skin, hair, & Laser Clinic
+[2:06:47 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'Dr. Shinde's Skin, hair, & Laser Clinic'
+[2:06:47 pm] INFO: Campaign sending WhatsApp to Dr. Shinde's Skin, hair, & Laser Clinic (070306 09388)...
+[2:06:48 pm] INFO: Sending automated WhatsApp outreach message to: 917030609388@c.us
+[2:06:48 pm] SUCCESS: WhatsApp outreach successfully sent to 070306 09388!
+[2:06:51 pm] SUCCESS: Synchronized outreach status for 'Dr. Shinde's Skin, hair, & Laser Clinic' back to Google Sheet.
+[2:06:51 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:07:11 pm] INFO: Campaign dispatching lead 5/26: Dr.Bone Skin & Hair Clinic (Ayu) A.Nagar
+[2:07:11 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'Dr.Bone Skin & Hair Clinic (Ayu) A.Nagar'
+[2:07:11 pm] INFO: Campaign sending WhatsApp to Dr.Bone Skin & Hair Clinic (Ayu) A.Nagar (093731 67883)...
+[2:07:11 pm] INFO: Sending automated WhatsApp outreach message to: 919373167883@c.us
+[2:07:11 pm] SUCCESS: WhatsApp outreach successfully sent to 093731 67883!
+[2:07:15 pm] SUCCESS: Synchronized outreach status for 'Dr.Bone Skin & Hair Clinic (Ayu) A.Nagar' back to Google Sheet.
+[2:07:15 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:07:35 pm] INFO: Campaign dispatching lead 6/26: Dr. Palkar's Skin and Hair Clinic
+[2:07:35 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'Dr. Palkar's Skin and Hair Clinic'
+[2:07:35 pm] INFO: Campaign sending WhatsApp to Dr. Palkar's Skin and Hair Clinic (094041 90564)...
+[2:07:35 pm] INFO: Sending automated WhatsApp outreach message to: 919404190564@c.us
+[2:07:35 pm] SUCCESS: WhatsApp outreach successfully sent to 094041 90564!
+[2:07:39 pm] SUCCESS: Synchronized outreach status for 'Dr. Palkar's Skin and Hair Clinic' back to Google Sheet.
+[2:07:39 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:07:59 pm] INFO: Campaign dispatching lead 7/26: Dr.Trishna’s aesthetic clinic
+[2:07:59 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'Dr.Trishna’s aesthetic clinic'
+[2:07:59 pm] INFO: Campaign sending WhatsApp to Dr.Trishna’s aesthetic clinic (073858 41317)...
+[2:08:00 pm] INFO: Sending automated WhatsApp outreach message to: 917385841317@c.us
+[2:08:00 pm] SUCCESS: WhatsApp outreach successfully sent to 073858 41317!
+[2:08:03 pm] SUCCESS: Synchronized outreach status for 'Dr.Trishna’s aesthetic clinic' back to Google Sheet.
+[2:08:03 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:08:23 pm] INFO: Campaign dispatching lead 8/26: SHRI SKIN CLINIC & LASER
+[2:08:23 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'SHRI SKIN CLINIC & LASER'
+[2:08:23 pm] INFO: Campaign sending WhatsApp to SHRI SKIN CLINIC & LASER (074992 52232)...
+[2:08:24 pm] INFO: Sending automated WhatsApp outreach message to: 917499252232@c.us
+[2:08:24 pm] SUCCESS: WhatsApp outreach successfully sent to 074992 52232!
+[2:08:28 pm] SUCCESS: Synchronized outreach status for 'SHRI SKIN CLINIC & LASER' back to Google Sheet.
+[2:08:28 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:08:48 pm] INFO: Campaign dispatching lead 9/26: Dr. Krishna Baldawa
+[2:08:48 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'Dr. Krishna Baldawa'
+[2:08:48 pm] INFO: Campaign sending WhatsApp to Dr. Krishna Baldawa (094222 27414)...
+[2:08:48 pm] INFO: Sending automated WhatsApp outreach message to: 919422227414@c.us
+[2:08:48 pm] SUCCESS: WhatsApp outreach successfully sent to 094222 27414!
+[2:08:51 pm] SUCCESS: Synchronized outreach status for 'Dr. Krishna Baldawa' back to Google Sheet.
+[2:08:51 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:09:12 pm] INFO: Campaign dispatching lead 10/26: Pratibimb Skin & Hair Care Clinic - Dr. Poonam Vidhate
+[2:09:12 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'Pratibimb Skin & Hair Care Clinic - Dr. Poonam Vidhate'
+[2:09:12 pm] INFO: Campaign sending WhatsApp to Pratibimb Skin & Hair Care Clinic - Dr. Poonam Vidhate (070832 44244)...
+[2:09:12 pm] INFO: Sending automated WhatsApp outreach message to: 917083244244@c.us
+[2:09:12 pm] SUCCESS: WhatsApp outreach successfully sent to 070832 44244!
+[2:09:15 pm] SUCCESS: Synchronized outreach status for 'Pratibimb Skin & Hair Care Clinic - Dr. Poonam Vidhate' back to Google Sheet.
+[2:09:15 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:09:35 pm] INFO: Campaign dispatching lead 11/26: Dr. Krishna Baldawa
+[2:09:35 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'Dr. Krishna Baldawa'
+[2:09:35 pm] INFO: Campaign sending WhatsApp to Dr. Krishna Baldawa (094222 27414)...
+[2:09:36 pm] INFO: Sending automated WhatsApp outreach message to: 919422227414@c.us
+[2:09:36 pm] SUCCESS: WhatsApp outreach successfully sent to 094222 27414!
+[2:09:39 pm] SUCCESS: Synchronized outreach status for 'Dr. Krishna Baldawa' back to Google Sheet.
+[2:09:39 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:09:59 pm] INFO: Campaign dispatching lead 12/26: DerMedica Clinic- Delhi Gate (Ahilyanagar)
+[2:09:59 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'DerMedica Clinic- Delhi Gate (Ahilyanagar)'
+[2:09:59 pm] INFO: Campaign sending WhatsApp to DerMedica Clinic- Delhi Gate (Ahilyanagar) (091685 12588)...
+[2:09:59 pm] INFO: Sending automated WhatsApp outreach message to: 919168512588@c.us
+[2:09:59 pm] SUCCESS: WhatsApp outreach successfully sent to 091685 12588!
+[2:10:03 pm] SUCCESS: Synchronized outreach status for 'DerMedica Clinic- Delhi Gate (Ahilyanagar)' back to Google Sheet.
+[2:10:03 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:10:23 pm] INFO: Campaign dispatching lead 13/26: Amey skin and laser center
+[2:10:23 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'Amey skin and laser center'
+[2:10:23 pm] INFO: Campaign sending WhatsApp to Amey skin and laser center (0241 232 3269)...
+[2:10:23 pm] WARN: WhatsApp number 0241 232 3269 (912412323269@c.us) is NOT registered on WhatsApp. Skipping.
+[2:10:27 pm] SUCCESS: Synchronized outreach status for 'Amey skin and laser center' back to Google Sheet.
+[2:10:27 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:10:47 pm] INFO: Campaign dispatching lead 14/26: ✅ 𝗘𝘁𝗲𝗿𝗻𝗮 𝗕𝘆 𝗗𝗿 𝗣𝗿𝗶𝘆𝗮𝗻𝗸𝗮 𝗣𝗮𝘁𝗶𝗹
+[2:10:47 pm] INFO: Gemini API key not configured. Using rule-based copy for: '✅ 𝗘𝘁𝗲𝗿𝗻𝗮 𝗕𝘆 𝗗𝗿 𝗣𝗿𝗶𝘆𝗮𝗻𝗸𝗮 𝗣𝗮𝘁𝗶𝗹'
+[2:10:47 pm] INFO: Campaign sending WhatsApp to ✅ 𝗘𝘁𝗲𝗿𝗻𝗮 𝗕𝘆 𝗗𝗿 𝗣𝗿𝗶𝘆𝗮𝗻𝗸𝗮 𝗣𝗮𝘁𝗶𝗹 (091140 21140)...
+[2:10:47 pm] INFO: Sending automated WhatsApp outreach message to: 919114021140@c.us
+[2:10:47 pm] SUCCESS: WhatsApp outreach successfully sent to 091140 21140!
+[2:10:51 pm] SUCCESS: Synchronized outreach status for '✅ 𝗘𝘁𝗲𝗿𝗻𝗮 𝗕𝘆 𝗗𝗿 𝗣𝗿𝗶𝘆𝗮𝗻𝗸𝗮 𝗣𝗮𝘁𝗶𝗹' back to Google Sheet.
+[2:10:51 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:11:11 pm] INFO: Campaign dispatching lead 15/26: Dr. Arun Vaidya's Advait Clinic
+[2:11:11 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'Dr. Arun Vaidya's Advait Clinic'
+[2:11:11 pm] INFO: Campaign sending WhatsApp to Dr. Arun Vaidya's Advait Clinic (085850 86008)...
+[2:11:11 pm] WARN: WhatsApp number 085850 86008 (918585086008@c.us) is NOT registered on WhatsApp. Skipping.
+[2:11:15 pm] SUCCESS: Synchronized outreach status for 'Dr. Arun Vaidya's Advait Clinic' back to Google Sheet.
+[2:11:15 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:11:35 pm] INFO: Campaign dispatching lead 16/26: Advait Clinic
+[2:11:35 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'Advait Clinic'
+[2:11:35 pm] INFO: Campaign sending WhatsApp to Advait Clinic (0241 234 1759)...
+[2:11:35 pm] WARN: WhatsApp number 0241 234 1759 (912412341759@c.us) is NOT registered on WhatsApp. Skipping.
+[2:11:39 pm] SUCCESS: Synchronized outreach status for 'Advait Clinic' back to Google Sheet.
+[2:11:39 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:11:59 pm] INFO: Campaign dispatching lead 17/26: Shri Vishwasanjeevani Laser Cosmetic Center
+[2:11:59 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'Shri Vishwasanjeevani Laser Cosmetic Center'
+[2:11:59 pm] INFO: Campaign sending WhatsApp to Shri Vishwasanjeevani Laser Cosmetic Center (099229 66677)...
+[2:11:59 pm] INFO: Sending automated WhatsApp outreach message to: 919922966677@c.us
+[2:11:59 pm] SUCCESS: WhatsApp outreach successfully sent to 099229 66677!
+[2:12:05 pm] SUCCESS: Synchronized outreach status for 'Shri Vishwasanjeevani Laser Cosmetic Center' back to Google Sheet.
+[2:12:05 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:12:25 pm] INFO: Campaign dispatching lead 18/26: Dr. Khadamkar (Skin Specialist)
+[2:12:25 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'Dr. Khadamkar (Skin Specialist)'
+[2:12:25 pm] INFO: Campaign sending WhatsApp to Dr. Khadamkar (Skin Specialist) (0241 234 6533)...
+[2:12:26 pm] WARN: WhatsApp number 0241 234 6533 (912412346533@c.us) is NOT registered on WhatsApp. Skipping.
+[2:12:30 pm] SUCCESS: Synchronized outreach status for 'Dr. Khadamkar (Skin Specialist)' back to Google Sheet.
+[2:12:30 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:12:50 pm] INFO: Campaign dispatching lead 19/26: Om Clinic : |Skin Specialist ,Hair Treatment,Piles Specialist Clinic| In Ahmednagar
+[2:12:50 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'Om Clinic : |Skin Specialist ,Hair Treatment,Piles Specialist Clinic| In Ahmednagar'
+[2:12:50 pm] INFO: Campaign sending WhatsApp to Om Clinic : |Skin Specialist ,Hair Treatment,Piles Specialist Clinic| In Ahmednagar (090211 02500)...
+[2:12:50 pm] WARN: WhatsApp number 090211 02500 (919021102500@c.us) is NOT registered on WhatsApp. Skipping.
+[2:12:54 pm] SUCCESS: Synchronized outreach status for 'Om Clinic : |Skin Specialist ,Hair Treatment,Piles Specialist Clinic| In Ahmednagar' back to Google Sheet.
+[2:12:54 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:13:14 pm] INFO: Campaign dispatching lead 20/26: Phoenix skin, hair, laser clinic and spa
+[2:13:14 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'Phoenix skin, hair, laser clinic and spa'
+[2:13:14 pm] INFO: Campaign sending WhatsApp to Phoenix skin, hair, laser clinic and spa (0241 232 9845)...
+[2:13:14 pm] WARN: WhatsApp number 0241 232 9845 (912412329845@c.us) is NOT registered on WhatsApp. Skipping.
+[2:13:17 pm] SUCCESS: Synchronized outreach status for 'Phoenix skin, hair, laser clinic and spa' back to Google Sheet.
+[2:13:17 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:13:38 pm] INFO: Campaign dispatching lead 21/26: Sukanya Clinic - Skin Beauty and ayurved Clinic
+[2:13:38 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'Sukanya Clinic - Skin Beauty and ayurved Clinic'
+[2:13:38 pm] INFO: Campaign sending WhatsApp to Sukanya Clinic - Skin Beauty and ayurved Clinic (091466 58277)...
+[2:13:38 pm] INFO: Sending automated WhatsApp outreach message to: 919146658277@c.us
+[2:13:38 pm] SUCCESS: WhatsApp outreach successfully sent to 091466 58277!
+[2:13:42 pm] SUCCESS: Synchronized outreach status for 'Sukanya Clinic - Skin Beauty and ayurved Clinic' back to Google Sheet.
+[2:13:42 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:14:02 pm] INFO: Campaign dispatching lead 22/26: Shri Sai hospital & Rupved skin clinic
+[2:14:02 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'Shri Sai hospital & Rupved skin clinic'
+[2:14:02 pm] INFO: Campaign sending WhatsApp to Shri Sai hospital & Rupved skin clinic (091308 10445)...
+[2:14:03 pm] INFO: Sending automated WhatsApp outreach message to: 919130810445@c.us
+[2:14:03 pm] SUCCESS: WhatsApp outreach successfully sent to 091308 10445!
+[2:14:07 pm] SUCCESS: Synchronized outreach status for 'Shri Sai hospital & Rupved skin clinic' back to Google Sheet.
+[2:14:07 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:14:27 pm] INFO: Campaign dispatching lead 23/26: Sparrsh Skin Hair Clinic
+[2:14:27 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'Sparrsh Skin Hair Clinic'
+[2:14:27 pm] INFO: Campaign sending WhatsApp to Sparrsh Skin Hair Clinic (098238 96867)...
+[2:14:28 pm] INFO: Sending automated WhatsApp outreach message to: 919823896867@c.us
+[2:14:28 pm] SUCCESS: WhatsApp outreach successfully sent to 098238 96867!
+[2:14:31 pm] SUCCESS: Synchronized outreach status for 'Sparrsh Skin Hair Clinic' back to Google Sheet.
+[2:14:31 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:14:51 pm] INFO: Campaign dispatching lead 24/26: Glo Skin And Hair Clinic
+[2:14:51 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'Glo Skin And Hair Clinic'
+[2:14:51 pm] INFO: Campaign sending WhatsApp to Glo Skin And Hair Clinic (090029 41818)...
+[2:14:51 pm] INFO: Sending automated WhatsApp outreach message to: 919002941818@c.us
+[2:14:52 pm] SUCCESS: WhatsApp outreach successfully sent to 090029 41818!
+[2:14:57 pm] SUCCESS: Synchronized outreach status for 'Glo Skin And Hair Clinic' back to Google Sheet.
+[2:14:57 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:15:17 pm] INFO: Campaign dispatching lead 25/26: Dr. M K Shaikh
+[2:15:17 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'Dr. M K Shaikh'
+[2:15:17 pm] INFO: Campaign sending WhatsApp to Dr. M K Shaikh (0241 234 1777)...
+[2:15:17 pm] WARN: WhatsApp number 0241 234 1777 (912412341777@c.us) is NOT registered on WhatsApp. Skipping.
+[2:15:20 pm] SUCCESS: Synchronized outreach status for 'Dr. M K Shaikh' back to Google Sheet.
+[2:15:20 pm] INFO: Time gap: Waiting 20 seconds before dispatching the next lead...
+[2:15:40 pm] INFO: Campaign dispatching lead 26/26: Dr Karale's Shri Vishwasanjeevani Ayurveda
+[2:15:40 pm] INFO: Gemini API key not configured. Using rule-based copy for: 'Dr Karale's Shri Vishwasanjeevani Ayurveda'
+[2:15:40 pm] INFO: Campaign sending WhatsApp to Dr Karale's Shri Vishwasanjeevani Ayurveda (099700 70340)...
+[2:15:41 pm] INFO: Sending automated WhatsApp outreach message to: 919970070340@c.us
+[2:15:41 pm] SUCCESS: WhatsApp outreach successfully sent to 099700 70340!
+[2:15:45 pm] SUCCESS: Synchronized outreach status for 'Dr Karale's Shri Vishwasanjeevani Ayurveda' back to Google Sheet.
+[2:15:45 pm] SUCCESS: Automated outreach campaign successfully completed! (Live)
