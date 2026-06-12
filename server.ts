@@ -13,7 +13,7 @@ import { Lead } from "./src/types";
 import { runScraper, requestStopScraping } from "./src/mapsScraper";
 import { logger } from "./src/logger";
 import { duplicateChecker } from "./src/duplicateChecker";
-import { loadFailedLeads, retryFailedLeads, sendLeadToWebhook, fetchLeadsFromGoogleSheet } from "./src/googleSheetsWebhook";
+import { loadFailedLeads, retryFailedLeads, sendLeadToWebhook, fetchLeadsFromGoogleSheet, fetchSheetNamesFromGoogleSheet } from "./src/googleSheetsWebhook";
 import { 
   getWhatsAppStatus, 
   initializeWhatsApp, 
@@ -249,10 +249,23 @@ async function updateLeadOutreachStatus(businessName: string, channel: "email" |
           whatsappSentDate: channel === "whatsapp" ? new Date().toISOString().split("T")[0] : undefined
         };
         const axios = (await import("axios")).default;
-        await axios.post(webhookUrl, payload, {
+        const response = await axios.post(webhookUrl, payload, {
           headers: { "Content-Type": "application/json" },
           timeout: 8000
         });
+        
+        let responseData = response.data;
+        if (typeof responseData === "string") {
+          try {
+            responseData = JSON.parse(responseData);
+          } catch (e) {
+            // Ignore parse errors if it's not JSON
+          }
+        }
+        if (responseData && typeof responseData === "object" && responseData.status === "error") {
+          throw new Error(`Google Apps Script error: ${responseData.message}`);
+        }
+        
         logger.success(`Synchronized outreach status for '${businessName}' back to Google Sheet.`);
       } catch (err: any) {
         logger.warn(`Failed to sync outreach status back to Google Sheet: ${err.message || err}`);
@@ -458,7 +471,7 @@ let campaignProgress = {
   skipped: 0
 };
 
-async function runCampaignLoop(delaySeconds = 30, enableEmail = true, enableWhatsapp = true, dryRun = false) {
+async function runCampaignLoop(delaySeconds = 30, enableEmail = true, enableWhatsapp = true, dryRun = false, sheetName?: string) {
   const webhookUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL;
   const isSheetConfigured = webhookUrl && webhookUrl.trim() !== "" && webhookUrl !== "YOUR_WEBHOOK_URL";
 
@@ -499,7 +512,7 @@ async function runCampaignLoop(delaySeconds = 30, enableEmail = true, enableWhat
   }
 
   campaignProgress.status = "Fetching leads from Google Sheet...";
-  let leads = await fetchLeadsFromGoogleSheet();
+  let leads = await fetchLeadsFromGoogleSheet(sheetName);
   
   if (!leads || leads.length === 0) {
     logger.error("Outreach campaign aborted: Failed to fetch leads from Google Sheet, or the sheet is empty.");
@@ -630,12 +643,21 @@ app.get("/api/campaign/status", (req, res) => {
   });
 });
 
+app.get("/api/campaign/sheets", async (req, res) => {
+  try {
+    const sheets = await fetchSheetNamesFromGoogleSheet();
+    res.json(sheets);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch Google Sheet tabs list." });
+  }
+});
+
 app.post("/api/campaign/start", (req, res) => {
   if (isCampaignRunning) {
     return res.status(400).json({ error: "Campaign is already running." });
   }
 
-  const { delaySeconds, enableEmail, enableWhatsapp, dryRun } = req.body;
+  const { delaySeconds, enableEmail, enableWhatsapp, dryRun, sheetName } = req.body;
   const delaySec = parseInt(delaySeconds, 10) || 30;
   const mailActive = enableEmail !== undefined ? Boolean(enableEmail) : true;
   const waActive = enableWhatsapp !== undefined ? Boolean(enableWhatsapp) : true;
@@ -655,7 +677,7 @@ app.post("/api/campaign/start", (req, res) => {
     skipped: 0
   };
   
-  runCampaignLoop(delaySec, mailActive, waActive, simulated).catch(err => {
+  runCampaignLoop(delaySec, mailActive, waActive, simulated, sheetName).catch(err => {
     logger.error(`Campaign crashed: ${err}`);
     isCampaignRunning = false;
     campaignProgress.status = `Error: ${err.message || err}`;

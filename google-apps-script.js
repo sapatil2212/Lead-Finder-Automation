@@ -55,13 +55,92 @@ function sanitizeForSheet(val) {
   return val;
 }
 
+// Helper to sanitize sheet name (limit to 100 chars and remove invalid characters: \ / ? * : [ ])
+function sanitizeSheetName(name) {
+  if (!name) return "Leads";
+  var clean = name.replace(/[\\/\?\*:\[\]]/g, "");
+  // Remove single quotes from beginning or end
+  clean = clean.replace(/^'+|'+$/g, "");
+  return clean.substring(0, 31).trim();
+}
+
 // ==========================================
 // doPost — Receives new leads & status updates
 // ==========================================
 function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    
+    // ── Handle outreach status updates (searches all sheets) ──
+    if (data.action === "updateOutreach") {
+      var sheets = activeSpreadsheet.getSheets();
+      var targetRow = -1;
+      var targetSheet = null;
+      var headers = null;
+      
+      for (var s = 0; s < sheets.length; s++) {
+        var currentSheet = sheets[s];
+        if (currentSheet.getLastRow() <= 1) continue;
+        
+        var currentHeaders = currentSheet.getRange(1, 1, 1, currentSheet.getLastColumn()).getValues()[0];
+        var mapsUrlCol = currentHeaders.indexOf("Google Maps URL");
+        if (mapsUrlCol === -1) mapsUrlCol = currentHeaders.indexOf("Maps URL");
+        var nameCol = currentHeaders.indexOf("Business Name");
+        
+        if (mapsUrlCol !== -1 || nameCol !== -1) {
+          var rows = currentSheet.getDataRange().getValues();
+          for (var i = 1; i < rows.length; i++) {
+            if (mapsUrlCol !== -1 && data.mapsUrl && rows[i][mapsUrlCol] === data.mapsUrl) {
+              targetRow = i + 1;
+              targetSheet = currentSheet;
+              headers = currentHeaders;
+              break;
+            }
+            if (nameCol !== -1 && rows[i][nameCol] === data.businessName) {
+              targetRow = i + 1;
+              targetSheet = currentSheet;
+              headers = currentHeaders;
+              break;
+            }
+          }
+        }
+        if (targetRow !== -1) break;
+      }
+      
+      if (targetRow !== -1 && targetSheet !== null) {
+        var updates = {
+          "Email Status": data.emailStatus,
+          "Email Sent Date": data.emailSentDate,
+          "WhatsApp Status": data.whatsappStatus,
+          "WhatsApp Sent Date": data.whatsappSentDate
+        };
+        
+        for (var hName in updates) {
+          var colIdx = headers.indexOf(hName);
+          if (colIdx !== -1 && updates[hName] !== undefined) {
+            targetSheet.getRange(targetRow, colIdx + 1).setValue(updates[hName]);
+          }
+        }
+        return ContentService.createTextOutput(JSON.stringify({ "status": "success", "message": "Outreach status updated." }))
+                             .setMimeType(ContentService.MimeType.JSON);
+      } else {
+        return ContentService.createTextOutput(JSON.stringify({ "status": "error", "message": "Lead not found in sheet." }))
+                             .setMimeType(ContentService.MimeType.JSON);
+      }
+    }
+    
+    // ── Append new lead data ──
+    var sheet;
+    if (data.sheetName) {
+      var sheetName = sanitizeSheetName(data.sheetName);
+      sheet = activeSpreadsheet.getSheetByName(sheetName);
+      if (!sheet) {
+        sheet = activeSpreadsheet.insertSheet(sheetName);
+      }
+    } else {
+      sheet = activeSpreadsheet.getActiveSheet();
+    }
     
     // Auto-append headers if the sheet is completely empty
     if (sheet.getLastRow() === 0) {
@@ -105,52 +184,6 @@ function doPost(e) {
       sheet.getRange(1, 2, sheet.getMaxRows(), 1).setNumberFormat("@");
     } catch (e) {}
     
-    var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-    
-    // ── Handle outreach status updates ──
-    if (data.action === "updateOutreach") {
-      var mapsUrlCol = headers.indexOf("Google Maps URL");
-      if (mapsUrlCol === -1) mapsUrlCol = headers.indexOf("Maps URL");
-      var nameCol = headers.indexOf("Business Name");
-      var targetRow = -1;
-      
-      if (mapsUrlCol !== -1 || nameCol !== -1) {
-        var rows = sheet.getDataRange().getValues();
-        for (var i = 1; i < rows.length; i++) {
-          if (mapsUrlCol !== -1 && data.mapsUrl && rows[i][mapsUrlCol] === data.mapsUrl) {
-            targetRow = i + 1;
-            break;
-          }
-          if (nameCol !== -1 && rows[i][nameCol] === data.businessName) {
-            targetRow = i + 1;
-            break;
-          }
-        }
-      }
-      
-      if (targetRow !== -1) {
-        var updates = {
-          "Email Status": data.emailStatus,
-          "Email Sent Date": data.emailSentDate,
-          "WhatsApp Status": data.whatsappStatus,
-          "WhatsApp Sent Date": data.whatsappSentDate
-        };
-        
-        for (var hName in updates) {
-          var colIdx = headers.indexOf(hName);
-          if (colIdx !== -1 && updates[hName] !== undefined) {
-            sheet.getRange(targetRow, colIdx + 1).setValue(updates[hName]);
-          }
-        }
-        return ContentService.createTextOutput(JSON.stringify({ "status": "success", "message": "Outreach status updated." }))
-                             .setMimeType(ContentService.MimeType.JSON);
-      } else {
-        return ContentService.createTextOutput(JSON.stringify({ "status": "error", "message": "Lead not found in sheet." }))
-                             .setMimeType(ContentService.MimeType.JSON);
-      }
-    }
-    
-    // ── Append new lead data ──
     sheet.appendRow([
       sanitizeForSheet(data.businessName),
       sanitizeForSheet(data.phone),
@@ -194,50 +227,77 @@ function doPost(e) {
 }
 
 // ==========================================
-// doGet — Returns all leads as JSON array
-// (This is what the campaign uses to fetch leads)
+// doGet — Returns all leads as JSON array from ALL sheets or specific sheet, or returns sheet names
 // ==========================================
 function doGet(e) {
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    var rows = sheet.getDataRange().getValues();
+    var activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     
-    if (rows.length <= 1) {
-      return ContentService.createTextOutput(JSON.stringify([]))
+    // Check if we want to get sheet names
+    if (e && e.parameter && e.parameter.action === "getSheets") {
+      var sheets = activeSpreadsheet.getSheets();
+      var sheetNames = [];
+      for (var s = 0; s < sheets.length; s++) {
+        var sheet = sheets[s];
+        if (sheet.getLastRow() > 1) {
+          var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+          if (headers.indexOf("Business Name") !== -1) {
+            sheetNames.push(sheet.getName());
+          }
+        }
+      }
+      return ContentService.createTextOutput(JSON.stringify(sheetNames))
                            .setMimeType(ContentService.MimeType.JSON);
     }
     
-    var headers = rows[0];
-    var leads = [];
+    // Otherwise fetch leads
+    var targetSheetName = e && e.parameter && e.parameter.sheet;
+    var sheets = [];
+    if (targetSheetName) {
+      var singleSheet = activeSpreadsheet.getSheetByName(targetSheetName);
+      if (singleSheet) sheets.push(singleSheet);
+    } else {
+      sheets = activeSpreadsheet.getSheets();
+    }
     
-    for (var i = 1; i < rows.length; i++) {
-      var row = rows[i];
-      var lead = {};
+    var leads = [];
+    for (var s = 0; s < sheets.length; s++) {
+      var sheet = sheets[s];
+      if (sheet.getLastRow() <= 1) continue;
       
-      for (var j = 0; j < headers.length; j++) {
-        var headerName = String(headers[j]).trim();
-        var key = REVERSE_HEADER_MAP[headerName] || headerName;
-        var val = row[j];
+      var rows = sheet.getDataRange().getValues();
+      var headers = rows[0];
+      
+      var nameColIdx = headers.indexOf("Business Name");
+      if (nameColIdx === -1) continue;
+      
+      for (var i = 1; i < rows.length; i++) {
+        var row = rows[i];
+        var lead = {};
         
-        // Type conversions
-        if (key === "rating" || key === "reviews" || key === "leadScore") {
-          val = parseFloat(val) || 0;
-        } else if (key === "googleAnalyticsPresent" || key === "metaPixelPresent" || key === "whatsappPresent" || key === "appointmentSystem" || key === "websiteMissing") {
-          val = (val === "Yes" || val === true || val === "true");
-        } else if (key === "emails") {
-          val = val ? String(val).split(",").map(function(s) { return s.trim(); }).filter(Boolean) : [];
-        } else if (key === "phone") {
-          val = String(val);  // Ensure phone is always a string
-        } else if (typeof val === "string" && val.indexOf("\u200B") === 0) {
-          val = val.substring(1);  // Remove sanitization prefix
+        for (var j = 0; j < headers.length; j++) {
+          var headerName = String(headers[j]).trim();
+          var key = REVERSE_HEADER_MAP[headerName] || headerName;
+          var val = row[j];
+          
+          if (key === "rating" || key === "reviews" || key === "leadScore") {
+            val = parseFloat(val) || 0;
+          } else if (key === "googleAnalyticsPresent" || key === "metaPixelPresent" || key === "whatsappPresent" || key === "appointmentSystem" || key === "websiteMissing") {
+            val = (val === "Yes" || val === true || val === "true");
+          } else if (key === "emails") {
+            val = val ? String(val).split(",").map(function(s) { return s.trim(); }).filter(Boolean) : [];
+          } else if (key === "phone") {
+            val = String(val);
+          } else if (typeof val === "string" && val.indexOf("\u200B") === 0) {
+            val = val.substring(1);
+          }
+          
+          lead[key] = val;
         }
         
-        lead[key] = val;
-      }
-      
-      // Only include rows that have a business name
-      if (lead.businessName) {
-        leads.push(lead);
+        if (lead.businessName) {
+          leads.push(lead);
+        }
       }
     }
     

@@ -15,6 +15,7 @@ export interface Lead {
   websiteMissing: boolean;
   leadScore: number;
   dateAdded: string;
+  sheetName?: string;
 
   // Digital Presence fields
   websiteStatus: "MISSING" | "WORKING" | "BROKEN" | "OUTDATED";

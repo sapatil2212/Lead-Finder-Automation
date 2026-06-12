@@ -79,6 +79,17 @@ export async function sendLeadToWebhook(lead: Lead): Promise<boolean> {
       });
 
       if (response && response.status >= 200 && response.status < 300) {
+        let responseData = response.data;
+        if (typeof responseData === "string") {
+          try {
+            responseData = JSON.parse(responseData);
+          } catch (e) {
+            // Ignore parse errors if it's not JSON
+          }
+        }
+        if (responseData && typeof responseData === "object" && responseData.status === "error") {
+          throw new Error(`Google Apps Script error: ${responseData.message}`);
+        }
         logger.success(`Webhook delivery successful for '${lead.businessName}'!`);
         return true;
       } else {
@@ -154,9 +165,10 @@ export async function retryFailedLeads(): Promise<{ succeeded: number; failed: n
 }
 
 /**
- * Fetches the active list of leads directly from the Google Sheet via Web App GET request
+ * Fetches the active list of leads directly from the Google Sheet via Web App GET request,
+ * optionally filtered by a specific sub-sheet (tab) name.
  */
-export async function fetchLeadsFromGoogleSheet(): Promise<Lead[]> {
+export async function fetchLeadsFromGoogleSheet(sheetName?: string): Promise<Lead[]> {
   const webhookUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL;
   if (!webhookUrl || webhookUrl.trim() === "" || webhookUrl === "YOUR_WEBHOOK_URL") {
     logger.warn("GOOGLE_SHEET_WEBHOOK_URL is not configured. Cannot fetch leads from Google Sheet.");
@@ -164,10 +176,11 @@ export async function fetchLeadsFromGoogleSheet(): Promise<Lead[]> {
   }
 
   try {
-    logger.info("Fetching active leads list directly from Google Sheet...");
+    logger.info(`Fetching active leads list directly from Google Sheet${sheetName ? ` (tab: ${sheetName})` : ""}...`);
+    const url = sheetName ? `${webhookUrl}?sheet=${encodeURIComponent(sheetName)}` : webhookUrl;
     
     // axios handles redirects (302) by default
-    const response = await axios.get(webhookUrl, {
+    const response = await axios.get(url, {
       timeout: 15000,
       maxRedirects: 5
     });
@@ -211,6 +224,40 @@ export async function fetchLeadsFromGoogleSheet(): Promise<Lead[]> {
     }
   } catch (error: any) {
     logger.error(`Failed to fetch leads from Google Sheet: ${error.message || error}`);
+  }
+  return [];
+}
+
+/**
+ * Fetches the active list of sub-sheets (tab names) from the Google Sheet via Web App GET request.
+ */
+export async function fetchSheetNamesFromGoogleSheet(): Promise<string[]> {
+  const webhookUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL;
+  if (!webhookUrl || webhookUrl.trim() === "" || webhookUrl === "YOUR_WEBHOOK_URL") {
+    logger.warn("GOOGLE_SHEET_WEBHOOK_URL is not configured. Cannot fetch sub-sheet names from Google Sheet.");
+    return [];
+  }
+
+  try {
+    logger.info("Fetching sub-sheet names from Google Sheet...");
+    const url = `${webhookUrl}?action=getSheets`;
+    const response = await axios.get(url, {
+      timeout: 10000,
+      maxRedirects: 5
+    });
+
+    if (response && Array.isArray(response.data)) {
+      logger.success(`Successfully fetched ${response.data.length} sub-sheet names from Google Sheet.`);
+      return response.data as string[];
+    } else {
+      if (response && response.data && typeof response.data === "object" && (response.data as any).status === "error") {
+        logger.error(`Google Sheet Web App returned script error: ${(response.data as any).message}`);
+        return [];
+      }
+      logger.error("Invalid response format received from Google Sheet Web App when getting sheet names.");
+    }
+  } catch (error: any) {
+    logger.error(`Failed to fetch sub-sheet names from Google Sheet: ${error.message || error}`);
   }
   return [];
 }

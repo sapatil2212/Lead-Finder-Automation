@@ -6,12 +6,12 @@
 import { Config } from "./types";
 
 export const CONFIG: Config = {
-  businessType: "dental clinic",
-  location: "swargate",
-  maxResults: 50,
+  businessType: "Dental Clinic",
+  location: "Pune",
+  maxResults: 10,
   enableSimulation: false,
   headless: false,
-  lat: 18.4986771,
-  lng: 73.8578427,
-  radius: 15
+  lat: 18.5213738,
+  lng: 73.8545071,
+  radius: 40
 };

@@ -102,6 +102,9 @@ export default function App() {
   const [campaignEnableEmail, setCampaignEnableEmail] = useState(true);
   const [campaignEnableWhatsapp, setCampaignEnableWhatsapp] = useState(true);
   const [campaignDryRun, setCampaignDryRun] = useState(false);
+  const [campaignSheets, setCampaignSheets] = useState<string[]>([]);
+  const [selectedCampaignSheet, setSelectedCampaignSheet] = useState<string>("");
+  const [isLoadingSheets, setIsLoadingSheets] = useState(false);
   const [previewLead, setPreviewLead] = useState<Lead | null>(null);
   const [previewCopy, setPreviewCopy] = useState<{ emailSubject: string; emailBody: string; whatsappMessage: string } | null>(null);
   const [isLoadingPreviewCopy, setIsLoadingPreviewCopy] = useState(false);
@@ -277,6 +280,12 @@ export default function App() {
     }, 3000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (activeTab === "outreach") {
+      fetchCampaignSheets();
+    }
+  }, [activeTab]);
 
   const fetchStatusAndLogs = async () => {
     try {
@@ -861,6 +870,21 @@ export default function App() {
     }
   };
 
+  const fetchCampaignSheets = async () => {
+    setIsLoadingSheets(true);
+    try {
+      const res = await fetch("/api/campaign/sheets");
+      if (res.ok) {
+        const data = await res.json();
+        setCampaignSheets(data);
+      }
+    } catch (e) {
+      console.error("Error loading sheets", e);
+    } finally {
+      setIsLoadingSheets(false);
+    }
+  };
+
   const handleStartCampaign = async () => {
     setIsStartingCampaign(true);
     try {
@@ -871,7 +895,8 @@ export default function App() {
           delaySeconds: campaignDelay,
           enableEmail: campaignEnableEmail,
           enableWhatsapp: campaignEnableWhatsapp,
-          dryRun: campaignDryRun
+          dryRun: campaignDryRun,
+          sheetName: selectedCampaignSheet
         })
       });
       if (res.ok) {
@@ -1393,6 +1418,33 @@ export default function App() {
                           type="text" 
                           value={location}
                           onChange={(e) => setLocation(e.target.value)}
+                          onBlur={async () => {
+                            if (!location.trim()) return;
+                            try {
+                              const res = await fetch(`/api/geocode/search?q=${encodeURIComponent(location)}`);
+                              if (res.ok) {
+                                const data = await res.json();
+                                if (data && data.length > 0) {
+                                  const item = data[0];
+                                  const newLat = parseFloat(item.lat);
+                                  const newLng = parseFloat(item.lon);
+                                  setLat(newLat);
+                                  setLng(newLng);
+                                  if (finderMapInstance.current) {
+                                    finderMapInstance.current.setView([newLat, newLng], 12);
+                                  }
+                                  if (finderMarker.current) {
+                                    finderMarker.current.setLatLng([newLat, newLng]);
+                                  }
+                                  if (finderCircle.current) {
+                                    finderCircle.current.setLatLng([newLat, newLng]);
+                                  }
+                                }
+                              }
+                            } catch (e) {
+                              console.error("Auto-geocoding error:", e);
+                            }
+                          }}
                           placeholder="e.g. Gangapur Road, Nashik"
                           disabled={isRunning || isSavingConfig}
                           className="w-full text-xs bg-[#030712] border border-[#1e293b] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-indigo-500 font-mono disabled:opacity-50"
@@ -1400,21 +1452,31 @@ export default function App() {
                         />
                       </div>
 
-                      {/* Slider radius */}
+                      {/* Search Radius Limit (slider + typeable number input) */}
                       <div>
                         <div className="flex justify-between text-[9px] font-bold text-slate-400 tracking-wider uppercase mb-1 font-mono">
                           <span>Search Radius Limit</span>
                           <span className="text-indigo-400 text-xs font-black lowercase">{radius}km radius</span>
                         </div>
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-3 mb-4">
                           <input 
                             type="range" 
                             min="1"
-                            max="15"
+                            max="100"
+                            value={radius > 100 ? 100 : radius}
+                            onChange={(e) => setRadius(parseInt(e.target.value) || 5)}
+                            disabled={isRunning || isSavingConfig}
+                            className="flex-grow h-1 bg-slate-900 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+                          />
+                          <input 
+                            type="number"
+                            min="1"
+                            max="500"
                             value={radius}
                             onChange={(e) => setRadius(parseInt(e.target.value) || 5)}
                             disabled={isRunning || isSavingConfig}
-                            className="w-full h-1 bg-slate-900 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+                            className="w-16 text-center text-xs bg-[#030712] border border-[#1e293b] rounded-lg px-2 py-1 text-white focus:outline-none focus:border-indigo-500 font-mono disabled:opacity-50"
+                            title="Type custom radius in km"
                           />
                         </div>
                       </div>
@@ -1425,7 +1487,7 @@ export default function App() {
                           <input 
                             type="number" 
                             min="1"
-                            max="100"
+                            max="5000"
                             value={maxResults}
                             onChange={(e) => setMaxResults(parseInt(e.target.value, 10) || 10)}
                             disabled={isRunning || isSavingConfig}
@@ -2054,11 +2116,146 @@ export default function App() {
 
                     <button 
                       onClick={() => {
-                        const code = `// Google Apps Script endpoint script
+                        const code = `// ============================================
+// Google Apps Script for LeadFinder AI Web App
+// PASTE THIS ENTIRE CODE IN YOUR APPS SCRIPT
+// Then: Deploy → New deployment → Web app
+// ============================================
+
+// Column header mapping (JSON key → Sheet column name)
+var HEADER_MAP = {
+  "businessName": "Business Name",
+  "phone": "Phone Number",
+  "address": "Address",
+  "rating": "Rating",
+  "reviews": "Reviews",
+  "website": "Website",
+  "websiteStatus": "Website Status",
+  "instagramUrl": "Instagram URL",
+  "instagramStatus": "Instagram Status",
+  "instagramLastPost": "Instagram Last Post",
+  "facebookUrl": "Facebook URL",
+  "facebookStatus": "Facebook Status",
+  "facebookLastPost": "Facebook Last Post",
+  "linkedinUrl": "LinkedIn URL",
+  "linkedinStatus": "LinkedIn Status",
+  "emails": "Emails",
+  "googleAnalyticsPresent": "Google Analytics",
+  "metaPixelPresent": "Meta Pixel",
+  "whatsappPresent": "WhatsApp Present",
+  "appointmentSystem": "Appointment System",
+  "mapsUrl": "Google Maps URL",
+  "leadScore": "Lead Score",
+  "leadPriority": "Lead Priority",
+  "dateAdded": "Date Added",
+  "aiInsight": "AI Insight",
+  "category": "Category",
+  "websiteMissing": "Website Missing",
+  "emailStatus": "Email Status",
+  "emailSentDate": "Email Sent Date",
+  "whatsappStatus": "WhatsApp Status",
+  "whatsappSentDate": "WhatsApp Sent Date"
+};
+
+// Reverse map: Sheet column name → JSON key (used by doGet)
+var REVERSE_HEADER_MAP = {};
+for (var key in HEADER_MAP) {
+  REVERSE_HEADER_MAP[HEADER_MAP[key]] = key;
+}
+
+// Helper to prevent Google Sheets from interpreting "+" or "=" as formulas
+function sanitizeForSheet(val) {
+  if (val === null || val === undefined) return "";
+  var str = String(val);
+  if (str.indexOf('+') === 0 || str.indexOf('=') === 0) {
+    return "\\u200B" + str;
+  }
+  return val;
+}
+
+// Helper to sanitize sheet name (limit to 31 chars and remove invalid characters: \\ / ? * : [ ])
+function sanitizeSheetName(name) {
+  if (!name) return "Leads";
+  var clean = name.replace(/[\\\\/\\?\\*:\\[\\]]/g, "");
+  // Remove single quotes from beginning or end
+  clean = clean.replace(/^'+|'+$/g, "");
+  return clean.substring(0, 31).trim();
+}
+
 function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    
+    // ── Handle outreach status updates (searches all sheets) ──
+    if (data.action === "updateOutreach") {
+      var sheets = activeSpreadsheet.getSheets();
+      var targetRow = -1;
+      var targetSheet = null;
+      var headers = null;
+      
+      for (var s = 0; s < sheets.length; s++) {
+        var currentSheet = sheets[s];
+        if (currentSheet.getLastRow() <= 1) continue;
+        
+        var currentHeaders = currentSheet.getRange(1, 1, 1, currentSheet.getLastColumn()).getValues()[0];
+        var mapsUrlCol = currentHeaders.indexOf("Google Maps URL");
+        if (mapsUrlCol === -1) mapsUrlCol = currentHeaders.indexOf("Maps URL");
+        var nameCol = currentHeaders.indexOf("Business Name");
+        
+        if (mapsUrlCol !== -1 || nameCol !== -1) {
+          var rows = currentSheet.getDataRange().getValues();
+          for (var i = 1; i < rows.length; i++) {
+            if (mapsUrlCol !== -1 && data.mapsUrl && rows[i][mapsUrlCol] === data.mapsUrl) {
+              targetRow = i + 1;
+              targetSheet = currentSheet;
+              headers = currentHeaders;
+              break;
+            }
+            if (nameCol !== -1 && rows[i][nameCol] === data.businessName) {
+              targetRow = i + 1;
+              targetSheet = currentSheet;
+              headers = currentHeaders;
+              break;
+            }
+          }
+        }
+        if (targetRow !== -1) break;
+      }
+      
+      if (targetRow !== -1 && targetSheet !== null) {
+        var updates = {
+          "Email Status": data.emailStatus,
+          "Email Sent Date": data.emailSentDate,
+          "WhatsApp Status": data.whatsappStatus,
+          "WhatsApp Sent Date": data.whatsappSentDate
+        };
+        
+        for (var hName in updates) {
+          var colIdx = headers.indexOf(hName);
+          if (colIdx !== -1 && updates[hName] !== undefined) {
+            targetSheet.getRange(targetRow, colIdx + 1).setValue(updates[hName]);
+          }
+        }
+        return ContentService.createTextOutput(JSON.stringify({ "status": "success", "message": "Outreach status updated." }))
+                             .setMimeType(ContentService.MimeType.JSON);
+      } else {
+        return ContentService.createTextOutput(JSON.stringify({ "status": "error", "message": "Lead not found in sheet." }))
+                             .setMimeType(ContentService.MimeType.JSON);
+      }
+    }
+    
+    // ── Append new lead data ──
+    var sheet;
+    if (data.sheetName) {
+      var sheetName = sanitizeSheetName(data.sheetName);
+      sheet = activeSpreadsheet.getSheetByName(sheetName);
+      if (!sheet) {
+        sheet = activeSpreadsheet.insertSheet(sheetName);
+      }
+    } else {
+      sheet = activeSpreadsheet.getActiveSheet();
+    }
     
     if (sheet.getLastRow() === 0) {
       sheet.appendRow([
@@ -2066,16 +2263,21 @@ function doPost(e) {
         "Instagram URL", "Instagram Status", "Instagram Last Post", "Facebook URL", "Facebook Status",
         "Facebook Last Post", "LinkedIn URL", "LinkedIn Status", "Emails", "Google Analytics",
         "Meta Pixel", "WhatsApp Present", "Appointment System", "Google Maps URL", "Lead Score", 
-        "Lead Priority", "Date Added", "AI Insight"
+        "Lead Priority", "Date Added", "AI Insight", "Category", "Website Missing", "Email Status",
+        "Email Sent Date", "WhatsApp Status", "WhatsApp Sent Date"
       ]);
     }
     
+    try {
+      sheet.getRange(1, 2, sheet.getMaxRows(), 1).setNumberFormat("@");
+    } catch (e) {}
+    
     sheet.appendRow([
-      data.businessName || "",
-      data.phone || "",
-      data.address || "",
-      data.rating || 0,
-      data.reviews || 0,
+      sanitizeForSheet(data.businessName),
+      sanitizeForSheet(data.phone),
+      sanitizeForSheet(data.address),
+      data.rating,
+      data.reviews,
       data.website || "",
       data.websiteStatus || "MISSING",
       data.instagramUrl || "",
@@ -2087,22 +2289,105 @@ function doPost(e) {
       data.linkedinUrl || "",
       data.linkedinStatus || "NOT_FOUND",
       data.emails ? data.emails.join(", ") : "",
-      data.googleAnalyticsPresent ? "Present" : "Missing",
-      data.metaPixelPresent ? "Present" : "Missing",
-      data.whatsappPresent ? "Present" : "Missing",
-      data.appointmentSystem ? "Present" : "Missing",
-      data.mapsUrl || "",
-      data.leadScore || 0,
+      data.googleAnalyticsPresent ? "Yes" : "No",
+      data.metaPixelPresent ? "Yes" : "No",
+      data.whatsappPresent ? "Yes" : "No",
+      data.appointmentSystem ? "Yes" : "No",
+      data.mapsUrl,
+      data.leadScore,
       data.leadPriority || "COLD",
-      data.dateAdded || "",
-      data.aiInsight || ""
+      data.dateAdded,
+      data.aiInsight || "",
+      data.category || "",
+      data.websiteMissing ? "Yes" : "No",
+      "", "", "", ""
     ]);
     
-    return ContentService.createTextOutput(JSON.stringify({ success: true }))
-      .setMimeType(ContentService.MimeType.JSON);
-  } catch(err) {
-    return ContentService.createTextOutput(JSON.stringify({ success: false, error: err.message }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return ContentService.createTextOutput(JSON.stringify({ "status": "success" }))
+                         .setMimeType(ContentService.MimeType.JSON);
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({ "status": "error", "message": error.toString() }))
+                         .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doGet(e) {
+  try {
+    var activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    
+    // Check if we want to get sheet names
+    if (e && e.parameter && e.parameter.action === "getSheets") {
+      var sheets = activeSpreadsheet.getSheets();
+      var sheetNames = [];
+      for (var s = 0; s < sheets.length; s++) {
+        var sheet = sheets[s];
+        if (sheet.getLastRow() > 1) {
+          var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+          if (headers.indexOf("Business Name") !== -1) {
+            sheetNames.push(sheet.getName());
+          }
+        }
+      }
+      return ContentService.createTextOutput(JSON.stringify(sheetNames))
+                           .setMimeType(ContentService.MimeType.JSON);
+    }
+    
+    // Otherwise fetch leads
+    var targetSheetName = e && e.parameter && e.parameter.sheet;
+    var sheets = [];
+    if (targetSheetName) {
+      var singleSheet = activeSpreadsheet.getSheetByName(targetSheetName);
+      if (singleSheet) sheets.push(singleSheet);
+    } else {
+      sheets = activeSpreadsheet.getSheets();
+    }
+    
+    var leads = [];
+    for (var s = 0; s < sheets.length; s++) {
+      var sheet = sheets[s];
+      if (sheet.getLastRow() <= 1) continue;
+      
+      var rows = sheet.getDataRange().getValues();
+      var headers = rows[0];
+      
+      var nameColIdx = headers.indexOf("Business Name");
+      if (nameColIdx === -1) continue;
+      
+      for (var i = 1; i < rows.length; i++) {
+        var row = rows[i];
+        var lead = {};
+        
+        for (var j = 0; j < headers.length; j++) {
+          var headerName = String(headers[j]).trim();
+          var key = REVERSE_HEADER_MAP[headerName] || headerName;
+          var val = row[j];
+          
+          if (key === "rating" || key === "reviews" || key === "leadScore") {
+            val = parseFloat(val) || 0;
+          } else if (key === "googleAnalyticsPresent" || key === "metaPixelPresent" || key === "whatsappPresent" || key === "appointmentSystem" || key === "websiteMissing") {
+            val = (val === "Yes" || val === true || val === "true");
+          } else if (key === "emails") {
+            val = val ? String(val).split(",").map(function(s) { return s.trim(); }).filter(Boolean) : [];
+          } else if (key === "phone") {
+            val = String(val);
+          } else if (typeof val === "string" && val.indexOf("\\u200B") === 0) {
+            val = val.substring(1);
+          }
+          
+          lead[key] = val;
+        }
+        
+        if (lead.businessName) {
+          leads.push(lead);
+        }
+      }
+    }
+    
+    return ContentService.createTextOutput(JSON.stringify(leads))
+                         .setMimeType(ContentService.MimeType.JSON);
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({ "status": "error", "message": error.toString() }))
+                         .setMimeType(ContentService.MimeType.JSON);
   }
 }`;
                         navigator.clipboard.writeText(code);
@@ -2216,23 +2501,54 @@ function doPost(e) {
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-2">
                         {/* Spacing & Delay controls */}
-                        <div className="space-y-3">
-                          <div className="flex items-center justify-between">
-                            <span className="text-slate-400 text-[10px] tracking-wider uppercase font-bold">Safety Dispatch Spacing:</span>
-                            <span className="text-indigo-400 font-bold">{campaignDelay} seconds</span>
+                        <div className="space-y-4">
+                          {/* Target Sheet Selector */}
+                          <div className="space-y-1.5">
+                            <label className="block text-[10px] font-bold text-slate-400 tracking-wider uppercase">
+                              Target Google Sheet Tab:
+                            </label>
+                            <div className="flex gap-2">
+                              <select
+                                value={selectedCampaignSheet}
+                                onChange={(e) => setSelectedCampaignSheet(e.target.value)}
+                                className="flex-grow text-xs bg-[#030712] border border-[#1e293b] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-indigo-500 font-mono cursor-pointer"
+                                disabled={isLoadingSheets}
+                              >
+                                <option value="">All Sheets (Combined)</option>
+                                {campaignSheets.map((s, idx) => (
+                                  <option key={idx} value={s}>{s}</option>
+                                ))}
+                              </select>
+                              <button
+                                onClick={fetchCampaignSheets}
+                                disabled={isLoadingSheets}
+                                className="p-2 bg-[#030712] border border-[#1e293b] rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white transition-all cursor-pointer flex items-center justify-center"
+                                title="Refresh Sheet List"
+                                type="button"
+                              >
+                                <RefreshCw className={`h-3.5 w-3.5 ${isLoadingSheets ? "animate-spin" : ""}`} />
+                              </button>
+                            </div>
                           </div>
-                          <input 
-                            type="range"
-                            min="10"
-                            max="120"
-                            step="5"
-                            value={campaignDelay}
-                            onChange={(e) => setCampaignDelay(parseInt(e.target.value, 10))}
-                            className="w-full accent-indigo-500 h-1.5 bg-slate-900 rounded-lg appearance-none cursor-pointer border border-slate-800"
-                          />
-                          <span className="text-[9px] text-slate-500 block font-sans">
-                            Recommended spacing: 30s+ to mimic human messaging patterns.
-                          </span>
+
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                              <span className="text-slate-400 text-[10px] tracking-wider uppercase font-bold">Safety Dispatch Spacing:</span>
+                              <span className="text-indigo-400 font-bold">{campaignDelay} seconds</span>
+                            </div>
+                            <input 
+                              type="range"
+                              min="10"
+                              max="120"
+                              step="5"
+                              value={campaignDelay}
+                              onChange={(e) => setCampaignDelay(parseInt(e.target.value, 10))}
+                              className="w-full accent-indigo-500 h-1.5 bg-slate-900 rounded-lg appearance-none cursor-pointer border border-slate-800"
+                            />
+                            <span className="text-[9px] text-slate-500 block font-sans">
+                              Recommended spacing: 30s+ to mimic human messaging patterns.
+                            </span>
+                          </div>
                         </div>
 
                         {/* Channels selection & dry-run */}
@@ -2338,8 +2654,8 @@ function doPost(e) {
                         Outreach Target List
                       </h3>
                     </div>
-                    <span className="text-[10px] text-slate-400 font-mono">
-                      {processedLeads.filter(l => (l.emails && l.emails.length > 0 && l.emailStatus !== "SENT") || (l.phone && l.whatsappStatus !== "SENT")).length} Pending Leads
+                     <span className="text-[10px] text-slate-400 font-mono">
+                      {processedLeads.filter(l => (!selectedCampaignSheet || l.sheetName === selectedCampaignSheet) && ((l.emails && l.emails.length > 0 && l.emailStatus !== "SENT") || (l.phone && l.whatsappStatus !== "SENT"))).length} Pending Leads
                     </span>
                   </div>
 
@@ -2354,7 +2670,7 @@ function doPost(e) {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-[#1e293b]/20">
-                        {processedLeads.map((lead, idx) => {
+                        {processedLeads.filter(l => !selectedCampaignSheet || l.sheetName === selectedCampaignSheet).map((lead, idx) => {
                           const hasEmail = lead.emails && lead.emails.length > 0;
                           const hasPhone = !!lead.phone;
                           return (

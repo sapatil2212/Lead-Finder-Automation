@@ -27,8 +27,142 @@ export function resetStopScraping(): void {
   stopRequested = false;
 }
 
-export function isStopScrapingRequested(): boolean {
-  return stopRequested;
+export function parseSearchQueries(businessType: string, location: string): string[] {
+  const parts = businessType.split(",").map(p => p.trim()).filter(Boolean);
+  if (parts.length <= 1) {
+    return [`${businessType} in ${location}`];
+  }
+  
+  const queries: string[] = [];
+  const lastPart = parts[parts.length - 1];
+  const lastPartWords = lastPart.split(/\s+/);
+  
+  const suffixes = [
+    "hospital", "clinic", "shop", "center", "centre", "restaurant", "hotel", "cafe", 
+    "dentist", "dentistry", "surgeon", "store", "academy", "school", "office", 
+    "parlour", "parlor", "spa", "salon", "studio", "gym", "club", "bar", "pub", 
+    "care", "service", "services", "doctor", "dermatologist", "agency", "dealer"
+  ];
+  
+  let suffixToAppend = "";
+  const lastWord = lastPartWords[lastPartWords.length - 1]?.toLowerCase();
+  if (lastWord && suffixes.includes(lastWord)) {
+    suffixToAppend = lastPartWords[lastPartWords.length - 1];
+  }
+  
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i];
+    const partWords = part.split(/\s+/);
+    const partHasSuffix = partWords.some(w => suffixes.includes(w.toLowerCase()));
+    
+    if (!partHasSuffix && suffixToAppend && i < parts.length - 1) {
+      queries.push(`${part} ${suffixToAppend} in ${location}`);
+    } else {
+      queries.push(`${part} in ${location}`);
+    }
+  }
+  
+  return Array.from(new Set(queries));
+}
+
+async function extractDetailsFromPage(page: Page) {
+  return await page.evaluate(() => {
+    let name = "";
+    const nameEl = document.querySelector('h1') || document.querySelector('h1.DUwDvf') || document.querySelector('div.x3b7o h1');
+    if (nameEl) name = (nameEl.textContent || "").trim();
+
+    let ratingNum = 0;
+    let reviewsNum = 0;
+
+    // Extract rating
+    const ratingEl = document.querySelector('div.F7nice span[aria-hidden="true"]') ||
+                     document.querySelector('div.F7nice span span');
+    if (ratingEl) {
+      const match = ratingEl.textContent?.match(/([0-9]\.[0-9])/);
+      if (match) {
+        ratingNum = parseFloat(match[1]);
+      } else {
+        const clean = ratingEl.textContent?.replace(/[^0-9.]/g, "");
+        if (clean) {
+          const num = parseFloat(clean);
+          if (!isNaN(num)) ratingNum = num;
+        }
+      }
+    }
+
+    // Extract reviews count
+    const reviewsEl = document.querySelector('div.F7nice span[aria-label*="reviews"]') ||
+                      document.querySelector('div.F7nice [aria-label*="reviews"]') ||
+                      document.querySelector('[aria-label*="reviews"]');
+    if (reviewsEl) {
+      const ariaLabel = reviewsEl.getAttribute('aria-label');
+      const matchLabel = ariaLabel?.replace(/[^0-9]/g, "");
+      if (matchLabel) {
+        reviewsNum = parseInt(matchLabel, 10);
+      } else {
+        const matchText = reviewsEl.textContent?.replace(/[^0-9]/g, "");
+        if (matchText) reviewsNum = parseInt(matchText, 10);
+      }
+    } else {
+      // Sibling fallback if aria-labels are missing (reviews is the second outer span)
+      const spans = document.querySelectorAll('div.F7nice > span');
+      if (spans.length > 1) {
+        const matchText = spans[1].textContent?.replace(/[^0-9]/g, "");
+        if (matchText) reviewsNum = parseInt(matchText, 10);
+      }
+    }
+
+    let webUrl = "";
+    const webEl = Array.from(document.querySelectorAll('a[href]')).find(a => {
+      const itemId = a.getAttribute('data-item-id') || '';
+      const label = a.getAttribute('aria-label') || '';
+      const tooltip = a.getAttribute('data-tooltip') || '';
+      return itemId === 'authority' || 
+             label.toLowerCase().includes('website') || 
+             tooltip.toLowerCase().includes('website');
+    });
+    if (webEl) webUrl = (webEl as HTMLAnchorElement).href;
+
+    let phoneVal = "";
+    const phoneEl = Array.from(document.querySelectorAll('*')).find(el => {
+      const itemId = el.getAttribute('data-item-id') || '';
+      const label = el.getAttribute('aria-label') || '';
+      return itemId.startsWith('phone:tel:') || label.startsWith('Phone:');
+    });
+    if (phoneEl) {
+      const attr = phoneEl.getAttribute('aria-label') || phoneEl.getAttribute('data-item-id') || phoneEl.textContent || "";
+      phoneVal = attr.replace("Phone:", "").replace("phone:tel:", "").trim();
+    } else {
+      const telLink = document.querySelector('a[href^="tel:"]');
+      if (telLink) phoneVal = telLink.getAttribute('href')?.replace('tel:', '').trim() || "";
+    }
+
+    let addressVal = "";
+    const addressEl = Array.from(document.querySelectorAll('*')).find(el => {
+      const itemId = el.getAttribute('data-item-id') || '';
+      const label = el.getAttribute('aria-label') || '';
+      const tooltip = el.getAttribute('data-tooltip') || '';
+      return itemId === 'address' || label.startsWith('Address:') || tooltip.toLowerCase().includes('copy address');
+    });
+    if (addressEl) {
+      const attr = addressEl.getAttribute('aria-label') || addressEl.getAttribute('data-item-id') || addressEl.textContent || "";
+      addressVal = attr.replace("Address:", "").replace("address", "").trim();
+    }
+
+    let catVal = "";
+    const catEl = document.querySelector("button[jsaction*='category']");
+    if (catEl) catVal = catEl.textContent?.trim() || "";
+
+    return {
+      businessName: name,
+      rating: ratingNum,
+      reviews: reviewsNum,
+      website: webUrl,
+      phone: phoneVal,
+      address: addressVal,
+      category: catVal
+    };
+  });
 }
 
 interface ScrapingResult {
@@ -95,10 +229,41 @@ function parseReviews(text: string | null): number {
   return isNaN(num) ? 0 : num;
 }
 
+function generateSheetName(): string {
+  let type = CONFIG.businessType.trim();
+  // Clean special characters invalid in sheet names
+  type = type.replace(/[\\/\?\*:\[\]]/g, "");
+  // Limit to 31 characters for Google Sheets tab compatibility
+  return type.substring(0, 31).trim();
+}
+
 export async function runScraper(): Promise<ScrapingResult> {
   resetStopScraping();
   const query = `${CONFIG.businessType} in ${CONFIG.location}`;
   logger.info(`Starting lead search for: '${query}'`);
+  
+  // Auto-geocode CONFIG.location to align search center coordinates
+  try {
+    logger.info(`Geocoding search location '${CONFIG.location}' to align search center coordinates...`);
+    const axios = (await import("axios")).default;
+    const geoResponse = await axios.get(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(CONFIG.location)}&format=json&limit=1`, {
+      headers: {
+        "User-Agent": "LeadFinder-AI-Agent/1.0"
+      },
+      timeout: 5000
+    });
+    if (geoResponse.data && geoResponse.data.length > 0) {
+      CONFIG.lat = parseFloat(geoResponse.data[0].lat);
+      CONFIG.lng = parseFloat(geoResponse.data[0].lon);
+      logger.info(`Aligned search center coordinates to Lat: ${CONFIG.lat}, Lng: ${CONFIG.lng}`);
+    } else {
+      logger.warn(`Could not geocode location '${CONFIG.location}'. Proceeding with existing coordinates.`);
+    }
+  } catch (e: any) {
+    logger.warn(`Failed to geocode location '${CONFIG.location}': ${e.message || e}. Proceeding with existing coordinates.`);
+  }
+
+  const sheetName = generateSheetName();
   
   const startTime = Date.now();
   let browser: Browser | null = null;
@@ -129,122 +294,139 @@ export async function runScraper(): Promise<ScrapingResult> {
 
     const page = await context.newPage();
     
-    // Direct search navigation bypasses home searching and consent modals often
-    const searchUrl = `https://www.google.com/maps/search/${encodeURIComponent(query)}`;
-    logger.info(`Navigating directly to Google Maps search page: ${searchUrl}`);
-    
-    await page.goto(searchUrl, { waitUntil: "domcontentloaded", timeout: 45000 });
-    
-    // Handle European / Cookie Consent Modal if it appears
-    logger.info("Checking for cookie consent / privacy screens...");
-    try {
-      const consentButtons = [
-        "button[aria-label*='Accept all']",
-        "button[aria-label*='Agree']",
-        "button:has-text('Accept all')",
-        "button:has-text('I agree')",
-        "button[class*='VfP3Zd']", // German consent buttons classes
-      ];
-      for (const selector of consentButtons) {
-        const btn = page.locator(selector).first();
-        if (await btn.isVisible()) {
-          logger.info(`Clicking cookie/consent accept button matching: ${selector}`);
-          await btn.click();
-          await page.waitForTimeout(2000);
-          break;
-        }
-      }
-    } catch (e) {
-      // safe to proceed
-    }
-
-    // Wait for results container or list to load
-    logger.info("Waiting for search results feed...");
-    try {
-      await page.waitForSelector("a[href*='/maps/place/']", { timeout: 15000 });
-    } catch (e) {
-      logger.warn("Could not find place link results container. checking fallback list...");
-    }
-
-    // Scroll results feed to discover listings
-    logger.info("Scanning and scrolling business results panel...");
+    const queries = parseSearchQueries(CONFIG.businessType, CONFIG.location);
+    logger.info(`Generated ${queries.length} search queries to execute sequentially.`);
     const placeLinks = new Set<string>();
-    let prevSize = 0;
-    let scrollAttempts = 0;
-    const maxScrollAttempts = 20; // Bound the scrolls to prevent infinite loops
 
-    while (placeLinks.size < CONFIG.maxResults && scrollAttempts < maxScrollAttempts) {
+    for (const queryToRun of queries) {
       if (stopRequested) {
-        logger.warn("Scraping cancelled by user during scrolling.");
+        logger.warn("Scraping cancelled by user during query sequence.");
         break;
       }
-      scrollAttempts++;
-      
-      // Select all links referencing detailed coordinates or place identifiers
-      const links = await page.evaluate(() => {
-        const anchors = Array.from(document.querySelectorAll('a[href*="/maps/place/"]'));
-        return anchors.map(a => (a as HTMLAnchorElement).href).filter(Boolean);
-      });
-
-      for (const link of links) {
-        placeLinks.add(link);
-      }
-
-      logger.info(`Scrolling... Found ${placeLinks.size} business URLs so far...`);
-
       if (placeLinks.size >= CONFIG.maxResults) {
-        logger.info(`Reached goal: extracted ${placeLinks.size} links.`);
         break;
       }
 
-      // Perform human-like scroll down on the results panel robustly
-      await page.evaluate(() => {
-        const findScrollContainer = () => {
-          let el = document.querySelector('div[role="feed"]');
-          if (el) return el;
-          const link = document.querySelector('a[href*="/maps/place/"]');
-          if (link) {
-            let parent = link.parentElement;
-            while (parent && parent !== document.body) {
-              const style = window.getComputedStyle(parent);
-              if (style.overflowY === 'auto' || style.overflowY === 'scroll') {
-                return parent;
-              }
-              parent = parent.parentElement;
-            }
+      logger.info(`Searching Google Maps for query: '${queryToRun}'`);
+      const searchUrl = `https://www.google.com/maps/search/${encodeURIComponent(queryToRun)}`;
+      logger.info(`Navigating directly to Google Maps search page: ${searchUrl}`);
+      
+      try {
+        await page.goto(searchUrl, { waitUntil: "domcontentloaded", timeout: 45000 });
+      } catch (err: any) {
+        logger.error(`Failed to navigate to search URL for query '${queryToRun}':`, err);
+        continue;
+      }
+      
+      // Handle European / Cookie Consent Modal if it appears
+      try {
+        const consentButtons = [
+          "button[aria-label*='Accept all']",
+          "button[aria-label*='Agree']",
+          "button:has-text('Accept all')",
+          "button:has-text('I agree')",
+          "button[class*='VfP3Zd']", // German consent buttons classes
+        ];
+        for (const selector of consentButtons) {
+          const btn = page.locator(selector).first();
+          if (await btn.isVisible()) {
+            logger.info(`Clicking cookie/consent accept button matching: ${selector}`);
+            await btn.click();
+            await page.waitForTimeout(2000);
+            break;
           }
-          return document.querySelector('.m67Bo') || document.querySelector('div[role="main"]');
-        };
-        const container = findScrollContainer() as HTMLElement;
-        if (container) {
-          container.scrollBy(0, 1000);
-        } else {
-          window.scrollBy(0, 1000);
         }
-      });
-
-      // Randomized delays to mimic human interaction
-      await page.waitForTimeout(1000 + Math.random() * 1000);
-
-      // Break if we've reached the very bottom of listings
-      const isEnd = await page.evaluate(() => {
-        const endText = ["You've reached the end of the list.", "No more results", "End of list"];
-        return endText.some(text => document.body.innerText.includes(text));
-      });
-
-      if (isEnd) {
-        logger.success("Google Maps matches complete. Reached the end of list.");
-        break;
+      } catch (e) {
+        // safe to proceed
       }
 
-      // If size hasn't grown in 5 iterations, stop to prevent looping
-      if (placeLinks.size === prevSize) {
-        if (scrollAttempts > 8 && placeLinks.size > 0) {
-          logger.info("Scroller paused. No new listings found after multiple attempts.");
+      // Wait for results container or list to load
+      logger.info("Waiting for search results feed...");
+      try {
+        await page.waitForSelector("a[href*='/maps/place/']", { timeout: 10000 });
+      } catch (e) {
+        logger.warn("Could not find place link results container. checking fallback list...");
+      }
+
+      // Scroll results feed to discover listings
+      logger.info(`Scanning and scrolling business results panel for '${queryToRun}'...`);
+      let queryPrevSize = placeLinks.size;
+      let scrollAttempts = 0;
+      const maxScrollAttempts = 15; // Limit per query scroll to prevent taking too long
+
+      while (placeLinks.size < CONFIG.maxResults && scrollAttempts < maxScrollAttempts) {
+        if (stopRequested) {
+          logger.warn("Scraping cancelled by user during scrolling.");
           break;
         }
+        scrollAttempts++;
+        
+        // Select all links referencing detailed coordinates or place identifiers
+        const links = await page.evaluate(() => {
+          const anchors = Array.from(document.querySelectorAll('a[href*="/maps/place/"]'));
+          return anchors.map(a => (a as HTMLAnchorElement).href).filter(Boolean);
+        });
+
+        for (const link of links) {
+          placeLinks.add(link);
+        }
+
+        logger.info(`Scrolling... Found ${placeLinks.size} business URLs so far...`);
+
+        if (placeLinks.size >= CONFIG.maxResults) {
+          logger.info(`Reached goal: extracted ${placeLinks.size} links.`);
+          break;
+        }
+
+        // Perform human-like scroll down on the results panel robustly
+        await page.evaluate(() => {
+          const findScrollContainer = () => {
+            let el = document.querySelector('div[role="feed"]');
+            if (el) return el;
+            const link = document.querySelector('a[href*="/maps/place/"]');
+            if (link) {
+              let parent = link.parentElement;
+              while (parent && parent !== document.body) {
+                const style = window.getComputedStyle(parent);
+                if (style.overflowY === 'auto' || style.overflowY === 'scroll') {
+                  return parent;
+                }
+                parent = parent.parentElement;
+              }
+            }
+            return document.querySelector('.m67Bo') || document.querySelector('div[role="main"]');
+          };
+          const container = findScrollContainer() as HTMLElement;
+          if (container) {
+            container.scrollBy(0, 1000);
+          } else {
+            window.scrollBy(0, 1000);
+          }
+        });
+
+        // Randomized delays to mimic human interaction
+        await page.waitForTimeout(1000 + Math.random() * 1000);
+
+        // Break if we've reached the very bottom of listings
+        const isEnd = await page.evaluate(() => {
+          const endText = ["You've reached the end of the list.", "No more results", "End of list"];
+          return endText.some(text => document.body.innerText.includes(text));
+        });
+
+        if (isEnd) {
+          logger.success("Google Maps matches complete for this query. Reached the end of list.");
+          break;
+        }
+
+        // If size hasn't grown in multiple iterations, stop
+        if (placeLinks.size === queryPrevSize) {
+          if (scrollAttempts > 5) {
+            logger.info("Scroller paused. No new listings found for this query after multiple attempts.");
+            break;
+          }
+        }
+        queryPrevSize = placeLinks.size;
       }
-      prevSize = placeLinks.size;
     }
 
     const targetUrls = Array.from(placeLinks).slice(0, CONFIG.maxResults);
@@ -283,103 +465,12 @@ export async function runScraper(): Promise<ScrapingResult> {
         await page.waitForTimeout(1000 + Math.random() * 1000); // Wait for content paint
 
         // --- EXTRACT BUSINESS DETAILS WITH ROBUST EVALUATIONS ---
-        const details = await page.evaluate(() => {
-          let name = "";
-          const nameEl = document.querySelector('h1') || document.querySelector('h1.DUwDvf') || document.querySelector('div.x3b7o h1');
-          if (nameEl) name = (nameEl.textContent || "").trim();
-
-          let ratingNum = 0;
-          let reviewsNum = 0;
-
-          // Extract rating
-          const ratingEl = document.querySelector('div.F7nice span[aria-hidden="true"]') ||
-                           document.querySelector('div.F7nice span span');
-          if (ratingEl) {
-            const match = ratingEl.textContent?.match(/([0-9]\.[0-9])/);
-            if (match) {
-              ratingNum = parseFloat(match[1]);
-            } else {
-              const clean = ratingEl.textContent?.replace(/[^0-9.]/g, "");
-              if (clean) {
-                const num = parseFloat(clean);
-                if (!isNaN(num)) ratingNum = num;
-              }
-            }
-          }
-
-          // Extract reviews count
-          const reviewsEl = document.querySelector('div.F7nice span[aria-label*="reviews"]') ||
-                            document.querySelector('div.F7nice [aria-label*="reviews"]') ||
-                            document.querySelector('[aria-label*="reviews"]');
-          if (reviewsEl) {
-            const ariaLabel = reviewsEl.getAttribute('aria-label');
-            const matchLabel = ariaLabel?.replace(/[^0-9]/g, "");
-            if (matchLabel) {
-              reviewsNum = parseInt(matchLabel, 10);
-            } else {
-              const matchText = reviewsEl.textContent?.replace(/[^0-9]/g, "");
-              if (matchText) reviewsNum = parseInt(matchText, 10);
-            }
-          } else {
-            // Sibling fallback if aria-labels are missing (reviews is the second outer span)
-            const spans = document.querySelectorAll('div.F7nice > span');
-            if (spans.length > 1) {
-              const matchText = spans[1].textContent?.replace(/[^0-9]/g, "");
-              if (matchText) reviewsNum = parseInt(matchText, 10);
-            }
-          }
-
-          let webUrl = "";
-          const webEl = Array.from(document.querySelectorAll('a[href]')).find(a => {
-            const itemId = a.getAttribute('data-item-id') || '';
-            const label = a.getAttribute('aria-label') || '';
-            const tooltip = a.getAttribute('data-tooltip') || '';
-            return itemId === 'authority' || 
-                   label.toLowerCase().includes('website') || 
-                   tooltip.toLowerCase().includes('website');
-          });
-          if (webEl) webUrl = (webEl as HTMLAnchorElement).href;
-
-          let phoneVal = "";
-          const phoneEl = Array.from(document.querySelectorAll('*')).find(el => {
-            const itemId = el.getAttribute('data-item-id') || '';
-            const label = el.getAttribute('aria-label') || '';
-            return itemId.startsWith('phone:tel:') || label.startsWith('Phone:');
-          });
-          if (phoneEl) {
-            const attr = phoneEl.getAttribute('aria-label') || phoneEl.getAttribute('data-item-id') || phoneEl.textContent || "";
-            phoneVal = attr.replace("Phone:", "").replace("phone:tel:", "").trim();
-          } else {
-            const telLink = document.querySelector('a[href^="tel:"]');
-            if (telLink) phoneVal = telLink.getAttribute('href')?.replace('tel:', '').trim() || "";
-          }
-
-          let addressVal = "";
-          const addressEl = Array.from(document.querySelectorAll('*')).find(el => {
-            const itemId = el.getAttribute('data-item-id') || '';
-            const label = el.getAttribute('aria-label') || '';
-            const tooltip = el.getAttribute('data-tooltip') || '';
-            return itemId === 'address' || label.startsWith('Address:') || tooltip.toLowerCase().includes('copy address');
-          });
-          if (addressEl) {
-            const attr = addressEl.getAttribute('aria-label') || addressEl.getAttribute('data-item-id') || addressEl.textContent || "";
-            addressVal = attr.replace("Address:", "").replace("address", "").trim();
-          }
-
-          let catVal = "";
-          const catEl = document.querySelector("button[jsaction*='category']");
-          if (catEl) catVal = catEl.textContent?.trim() || "";
-
-          return {
-            businessName: name,
-            rating: ratingNum,
-            reviews: reviewsNum,
-            website: webUrl,
-            phone: phoneVal,
-            address: addressVal,
-            category: catVal
-          };
-        });
+        let details = await extractDetailsFromPage(page);
+        if (!details.phone || !details.address) {
+          logger.info(`Missing phone or address. Waiting 2.5s for dynamic content...`);
+          await page.waitForTimeout(2500);
+          details = await extractDetailsFromPage(page);
+        }
 
         let businessName = details.businessName;
         let rating = details.rating;
@@ -394,10 +485,18 @@ export async function runScraper(): Promise<ScrapingResult> {
           continue;
         }
 
-        // Validate basic Filters (Name, Phone, Rating must exist)
-        if (!phone || phone.toLowerCase() === "not found" || phone.trim() === "") {
-          logger.warn(`Skipped: '${businessName}' (Missing Phone Number)`);
+        // Validate basic Filters (Name, Phone/Website, Rating must exist)
+        const hasPhone = phone && phone.toLowerCase() !== "not found" && phone.trim() !== "";
+        const hasWebsite = website && website.trim() !== "";
+
+        if (!hasPhone && !hasWebsite) {
+          logger.warn(`Skipped: '${businessName}' (Missing both Phone Number and Website)`);
           continue;
+        }
+
+        // Stash placeholder for missing phone number so we have a valid string value
+        if (!hasPhone) {
+          phone = "Not Found";
         }
 
         if (rating === 0) {
@@ -430,20 +529,45 @@ export async function runScraper(): Promise<ScrapingResult> {
         }
 
         // Run website, Instagram, Facebook, and LinkedIn analyzers
+        if (stopRequested) {
+          logger.warn("Scraping cancelled by user before website analysis.");
+          break;
+        }
+
         logger.info(`Analyzing website indicators for '${businessName}'...`);
         const webAnalysis = await analyzeWebsite(browser!, website);
+
+        if (stopRequested) {
+          logger.warn("Scraping cancelled by user before Instagram analysis.");
+          break;
+        }
 
         logger.info(`Analyzing Instagram presence for '${businessName}'...`);
         const instaAnalysis = await analyzeInstagram(browser!, businessName);
 
+        if (stopRequested) {
+          logger.warn("Scraping cancelled by user before Facebook analysis.");
+          break;
+        }
+
         logger.info(`Analyzing Facebook presence for '${businessName}'...`);
         const fbAnalysis = await analyzeFacebook(browser!, businessName);
+
+        if (stopRequested) {
+          logger.warn("Scraping cancelled by user before LinkedIn analysis.");
+          break;
+        }
 
         logger.info(`Analyzing LinkedIn presence for '${businessName}'...`);
         const liAnalysis = await analyzeLinkedIn(browser!, businessName);
 
         if (webAnalysis.status !== "WORKING") {
           withoutWebsiteCount++;
+        }
+
+        if (stopRequested) {
+          logger.warn("Scraping cancelled by user before scoring and AI insight generation.");
+          break;
         }
 
         // Calculate Digital Presence Score
@@ -488,7 +612,8 @@ export async function runScraper(): Promise<ScrapingResult> {
           leadScore: scoreDetails.score,
           leadPriority: scoreDetails.priority,
           aiInsight,
-          dateAdded: new Date().toISOString().split("T")[0]
+          dateAdded: new Date().toISOString().split("T")[0],
+          sheetName
         };
 
         // Premium Console Log
@@ -504,6 +629,11 @@ export async function runScraper(): Promise<ScrapingResult> {
         logger.log(`Priority:\n${scoreDetails.priority}\n`);
 
         leadsFound.push(fullLead);
+
+        if (stopRequested) {
+          logger.warn("Scraping cancelled by user before webhook submission.");
+          break;
+        }
 
         // Submit to Sheets webhook
         const success = await sendLeadToWebhook(fullLead);
@@ -565,6 +695,7 @@ export async function runSimulationScanner(): Promise<ScrapingResult> {
   resetStopScraping();
   const query = `${CONFIG.businessType} in ${CONFIG.location}`;
   logger.warn(`--- Running High-Fidelity Simulation Mode for '${query}' ---`);
+  const sheetName = generateSheetName();
   
   const startTime = Date.now();
   const simulatedLeads: Partial<Lead>[] = getMockLeadsPool(CONFIG.businessType, CONFIG.location);
@@ -588,9 +719,16 @@ export async function runSimulationScanner(): Promise<ScrapingResult> {
     await new Promise(resolve => setTimeout(resolve, 800));
 
     // Validate core Filters: name, phone, rating
-    if (!mock.phone) {
-      logger.warn(`Skipped: '${mock.businessName}' (Missing Phone Number)`);
+    const hasPhone = mock.phone && mock.phone.toLowerCase() !== "not found" && mock.phone.trim() !== "";
+    const hasWebsite = mock.website && mock.website.trim() !== "";
+
+    if (!hasPhone && !hasWebsite) {
+      logger.warn(`Skipped: '${mock.businessName}' (Missing both Phone Number and Website)`);
       continue;
+    }
+
+    if (!hasPhone) {
+      mock.phone = "Not Found";
     }
 
     if (!mock.rating) {
@@ -681,7 +819,8 @@ export async function runSimulationScanner(): Promise<ScrapingResult> {
       leadScore: scoreDetails.score,
       leadPriority: scoreDetails.priority,
       aiInsight,
-      dateAdded: new Date().toISOString().split("T")[0]
+      dateAdded: new Date().toISOString().split("T")[0],
+      sheetName
     };
 
     logger.log(`\nFound:\n${fullLead.businessName}`);
@@ -696,6 +835,11 @@ export async function runSimulationScanner(): Promise<ScrapingResult> {
     logger.log(`Priority:\n${scoreDetails.priority}\n`);
 
     leadsFound.push(fullLead);
+
+    if (stopRequested) {
+      logger.warn("Simulated scraping cancelled by user before webhook submission.");
+      break;
+    }
 
     // Post to Google Sheets Webhook
     const success = await sendLeadToWebhook(fullLead);
